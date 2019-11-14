@@ -6,7 +6,7 @@
     "compile": "browserify --debug src/main.ts -p [ tsify --project src/tsconfig.json ] -o public/js/app.js",
     "build": "browserify src/main.ts -p [ tsify --project src/tsconfig.json ] | uglifyjs -cm -o public/js/app.js",
     "clean": "rm -f public/js/app.js",
-    "start": "budo src/main.ts:js/app.js -p 3000 --dir public --live=*.{html,js,css} -- --debug -p [ tsify --project src/tsconfig.json ]"
+    "start": "budo src/main.ts:js/app.js -p 3000 --ssl --dir public --live=*.{html,js,css} -- --debug -p [ tsify --project src/tsconfig.json ]"
   },
   "license": "MIT",
   "dependencies": {

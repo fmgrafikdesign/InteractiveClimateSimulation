@@ -21,10 +21,10 @@ const MIDIEventReceiver = {
                         // Control position
                         TerrainController.setX(e.velocity);
                         console.log("setX");
-                    } else if(e.note.number == 95) {
+                    } else if(e.note.number == 94) {
                         // Control color
                         TerrainController.setColor(new Color(0, e.velocity, 0))
-                    } else if (e.note.number == 96) {
+                    } else if (e.note.number == 95) {
                         // Control size
                         TerrainController.setSize(e.velocity);
                     }
