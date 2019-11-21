@@ -1,3 +1,5 @@
+@import "initMenu.css";
+
 body, td, th {
   font-family: helvetica, arial, sans-serif;
   font-size: 16px;
@@ -6,4 +8,16 @@ body, td, th {
 body, html {
   margin: 0;
   padding: 0;
+}
+
+#Canvas-Container {
+  width: 98%;
+  height: 95%;
+  margin: auto;
+}
+
+#Canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
