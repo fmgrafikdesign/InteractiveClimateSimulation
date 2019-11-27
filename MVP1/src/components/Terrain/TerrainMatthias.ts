@@ -29,7 +29,7 @@ export class Terrain
     {
         const planeGeometry: Geometry = new PlaneGeometry(this.width, this.height, this.verticesX - 1, this.verticesY - 1);
         //let material = new THREE.MeshLambertMaterial({color: new Color(1, 0.8, 0.6)});
-        const material: Material = new MeshPhongMaterial({color: new Color(1, 0.8, 0.6), wireframe: false});
+        const material: Material = new MeshPhongMaterial({color: new Color(1, 0.9, 0.7), wireframe: false});
 
         //planeGeometry.setFromPoints(this.vertices);
 

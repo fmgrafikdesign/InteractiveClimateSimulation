@@ -12,9 +12,6 @@ export default class TerrainRenderer {
     {
         if (!document.getElementById("Canvas"))
         {
-            // console.log("No element called \"Canvas\" found in the current DOM structure! Add a canvas element with the ID \"Canvas\"!");
-            // return;
-
             console.log("Trying to generate a canvas element");
             const canvasContainer = document.createElement("div");
             canvasContainer.id = "Canvas-Container";

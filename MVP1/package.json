@@ -12,6 +12,7 @@
   "dependencies": {
     "mithril": "^2.0.4",
     "three": "^0.109.0",
+    "three-orbitcontrols-ts": "^0.1.2",
     "webmidi": "^2.5.1"
   },
   "devDependencies": {

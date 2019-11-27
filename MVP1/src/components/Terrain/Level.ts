@@ -17,10 +17,10 @@ import {
     Vector3,
     WebGLRenderer
 } from "three";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import TerrainRenderer from "./TerrainRenderer";
-import {Vnode} from "mithril";
+import m, {Vnode} from "mithril";
 import {RandomTerrainBuilderGenerator} from "./Generators/RandomTerrainBuilderGenerator";
+import {OrbitControls} from "three-orbitcontrols-ts";
 
 
 export default class Level {
@@ -64,7 +64,6 @@ export default class Level {
     view(vnode: Vnode)
     {
         console.log("Getting into level view");
-
     }
 
     setTerrain(terrain : Terrain)
@@ -111,17 +110,17 @@ export default class Level {
          */
         this._scene = new Scene();
         let axesHelper = new AxesHelper(3);
-        //let controls = new THREE.OrbitControls(this._camera, this.renderer.canvas);
+        let controls = new OrbitControls(this._camera, this.renderer.canvas);
 
-        let ambientLight = new AmbientLight(new Color(1, 1, 0.7), 0.2);
-        let directionalLight = new DirectionalLight(new Color(1, 1, 0.3), 1);
+        let ambientLight = new AmbientLight(new Color(1, 1, 0.7), 0.15);
+        let directionalLight = new DirectionalLight(new Color(1, 1, 0.9), 1);
         directionalLight.position.set(1, 1, 10);
 
         this.ligths.push(ambientLight, directionalLight);
 
 
         //this.scene.add(axesHelper);
-        //this.scene.add(controls);
+        this.scene.add(controls as unknown as Object3D);
         this._scene.add(ambientLight);
         this._scene.add(directionalLight);
     }
@@ -153,7 +152,7 @@ export default class Level {
     }
 
     private setupCamera() {
-        this._camera = new THREE.PerspectiveCamera(75, 1, 0.1, 5000);
+        this._camera = new PerspectiveCamera(75, 1, 0.1, 5000);
         this.resetCameraProperties();
     }
 

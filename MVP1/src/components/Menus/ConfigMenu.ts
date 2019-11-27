@@ -7,10 +7,14 @@ const ConfigMenu: m.ClosureComponent = (vnode) => {
     return {
         oninit ({attrs}) {
 
+            m("div", "Generating terrain");
+
             console.log("Attrs in oninit: ");
             console.log(attrs);
         },
         oncreate (vnode) {
+
+            m("div", "Generating terrain");
 
             console.log("VNode in oncreate: ");
             console.log(vnode);
@@ -49,6 +53,8 @@ const ConfigMenu: m.ClosureComponent = (vnode) => {
 
             console.log("Attrs in view: ");
             console.log(attrs);
+
+            m("div", "Generating terrain");
         }
     };
 };
