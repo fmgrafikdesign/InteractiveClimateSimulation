@@ -12,9 +12,22 @@ const TerrainController = {
         setColor: (color: Color) => {
             terrain.setColor(color);
         },
-    setSize: (size: number) => {
+        setSize: (size: number) => {
             terrain.setSize(size);
-    }
+        },
+
+        rotateCameraUpDown: (velocity: number) =>
+        {
+            
+        },
+        rotateCameraLeftRight: (velocity: number) =>
+        {
+
+        },
+        panCameraForward: (velocity: number) =>
+        {
+
+        }
     }
 ;
 

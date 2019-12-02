@@ -19,14 +19,17 @@ const MIDIEventReceiver = {
                     // Last three white notes on the piano on the right side
                     if(e.note.number == 93) {
                         // Control position
-                        TerrainController.setX(e.velocity);
+                        //TerrainController.setX(e.velocity);
+                        TerrainController.rotateCameraUpDown(e.velocity);
                         console.log("setX");
                     } else if(e.note.number == 94) {
                         // Control color
-                        TerrainController.setColor(new Color(0, e.velocity, 0))
+                        //TerrainController.setColor(new Color(0, e.velocity, 0))
+                        TerrainController.rotateCameraLeftRight(e.velocity);
                     } else if (e.note.number == 95) {
                         // Control size
-                        TerrainController.setSize(e.velocity);
+                        //TerrainController.setSize(e.velocity);
+                        TerrainController.panCameraForward(e.velocity);
                     }
 
                 })

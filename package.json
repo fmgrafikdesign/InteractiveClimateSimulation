@@ -6,15 +6,6 @@
   "dependencies": {
     "mithril": "^2.0.4"
   },
-  "devDependencies": {
-    "@types/mithril": "^2.0.2",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.9"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack src/index.js --output bin/app.js -d --watch"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fmgrafikdesign/InteractiveClimateSimulation.git"
