@@ -1,6 +1,7 @@
-import {Vector2, Vector3} from "three";
+import {PlaneGeometry, Vector2, Vector3} from "three";
 import {ITerrainGenerator} from "./ITerrainGenerator";
-import {Terrain} from "../TerrainMatthias";
+//import {Terrain} from "../TerrainMatthias";
+import {Terrain} from "../TerrainFabian";
 
 
 export class RandomTerrainBuilderGenerator implements ITerrainGenerator
@@ -56,7 +57,8 @@ export class RandomTerrainBuilderGenerator implements ITerrainGenerator
 
 		console.info("Smoothing done");
 
-		return new Terrain(this.vertices, this.verticesX, this.verticesY, this.width, this.height);
+		//return new Terrain(this.vertices, this.verticesX, this.verticesY, this.width, this.height);
+		return new Terrain(new PlaneGeometry(), this.verticesX, this.verticesY, this.width, this.height);
 	}
 
 	addCosineHill(hillCenterX : number, hillCenterY : number)

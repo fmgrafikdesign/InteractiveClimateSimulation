@@ -1,5 +1,5 @@
 
-import {Terrain} from "./TerrainMatthias";
+import {Terrain} from "./TerrainFabian";
 import * as THREE from "three";
 import {
     AmbientLight,
@@ -9,7 +9,7 @@ import {
     Color,
     DirectionalLight,
     Light,
-    Mesh,
+    Mesh, MeshLambertMaterial,
     MeshPhongMaterial,
     Object3D,
     PerspectiveCamera,
@@ -21,6 +21,7 @@ import TerrainRenderer from "./TerrainRenderer";
 import m, {Vnode} from "mithril";
 import {RandomTerrainBuilderGenerator} from "./Generators/RandomTerrainBuilderGenerator";
 import {OrbitControls} from "three-orbitcontrols-ts";
+import {RandomTerrainGenerator} from "./Generators/RandomTerrainGenerator";
 
 
 export default class Level {
@@ -49,8 +50,8 @@ export default class Level {
     {
         console.log("Starting level");
         console.log(vnode);
-        this._terrain = (vnode.attrs.terrain) ? new RandomTerrainBuilderGenerator().generate() : new RandomTerrainBuilderGenerator().generate();
-
+//        this._terrain = (vnode.attrs.terrain) ? new RandomTerrainBuilderGenerator().generate() : new RandomTerrainBuilderGenerator().generate();
+        this._terrain = new RandomTerrainGenerator().generate();
         this._camera = new PerspectiveCamera();
         this._scene = new Scene();
         this.ligths = [];
@@ -132,18 +133,17 @@ export default class Level {
          * @type {BoxGeometry|BoxGeometry}
          */
         let cubeGeometry = new BoxGeometry(1, 1, 1);
-        let material = new MeshPhongMaterial({color: new Color(1, 0.8, 0.5)});
 
-        this._terrain.generateMesh();
-        this._terrain.mesh.material = material;
+        //this._terrain.generateMesh();
+       // this._terrain.mesh.material = material;
 
         this._scene.add(this._terrain.mesh);
 
-        /** Test cube
-        const cube = new Mesh(cubeGeometry, material);
-        cube.castShadow = true;
+
+        //const cube = new Mesh(cubeGeometry, material);
+        //cube.castShadow = true;
         //cube.position.z = 6;
-        this.scene.add(cube); */
+        //this.scene.add(cube);
     }
 
     private getCanvasDimensions() {
@@ -159,7 +159,7 @@ export default class Level {
     private resetCameraProperties() {
         this._camera.up.set(0, 0, 1);
         // this.camera.position.z = 3;
-        this._camera.position.set(700, -700, 400);
+        this._camera.position.set(200, -200, 200);
         // this._camera.position.set(1, 1.5, 1);
         this._camera.lookAt(new Vector3(0, 0, 0));
         this._camera.aspect = this.canvasWidth / this.canvasHeight;
