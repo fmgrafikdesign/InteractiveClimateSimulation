@@ -5,9 +5,9 @@ import AbstractMessageSender from "../../MessageSystem/AbstractMessageSender";
 
 export default class CustomImageData extends AbstractMessageSender
 {
-	private imageWidth: number;
-	private imageHeight: number;
-	private data: Uint8ClampedArray[];
+	private readonly imageWidth: number;
+	private readonly imageHeight: number;
+	private readonly data: Uint8ClampedArray[];
 	
 	private dun: boolean;
 	
@@ -77,24 +77,24 @@ export default class CustomImageData extends AbstractMessageSender
 		const strengthX : number = x - Math.floor(x);
 		const strengthY : number = y - Math.floor(y);
 
-		const upperInterpolatedValues = this.interpolateUintArray(upperLeftData, upperRightData, strengthX);
-		const lowerInterpolatedValues = this.interpolateUintArray(lowerLeftData, lowerRightData, strengthX);
+		const upperInterpolatedValues = CustomImageData.interpolateUintArray(upperLeftData, upperRightData, strengthX);
+		const lowerInterpolatedValues = CustomImageData.interpolateUintArray(lowerLeftData, lowerRightData, strengthX);
 
-		return this.interpolateUintArray(upperInterpolatedValues, lowerInterpolatedValues, strengthY);
+		return CustomImageData.interpolateUintArray(upperInterpolatedValues, lowerInterpolatedValues, strengthY);
 	}
 
-	private interpolateUintArray(value1: Uint8ClampedArray, value2: Uint8ClampedArray, strength: number): Uint8ClampedArray
+	private static interpolateUintArray(value1: Uint8ClampedArray, value2: Uint8ClampedArray, strength: number): Uint8ClampedArray
 	{
 		const interpolatedValue = value1;
-		interpolatedValue[0] = this.interpolateLinear(value1[0], value2[0], strength);
-		interpolatedValue[1] = this.interpolateLinear(value1[1], value2[1], strength);
-		interpolatedValue[2] = this.interpolateLinear(value1[2], value2[2], strength);
-		interpolatedValue[3] = this.interpolateLinear(value1[3], value2[3], strength);
+		interpolatedValue[0] = CustomImageData.interpolateLinear(value1[0], value2[0], strength);
+		interpolatedValue[1] = CustomImageData.interpolateLinear(value1[1], value2[1], strength);
+		interpolatedValue[2] = CustomImageData.interpolateLinear(value1[2], value2[2], strength);
+		interpolatedValue[3] = CustomImageData.interpolateLinear(value1[3], value2[3], strength);
 
 		return interpolatedValue;
 	}
 
-	private interpolateLinear(value1: number, value2: number, strength: number): number
+	private static interpolateLinear(value1: number, value2: number, strength: number): number
 	{
 		return (1 - strength) * value1 + strength * value2;
 	}

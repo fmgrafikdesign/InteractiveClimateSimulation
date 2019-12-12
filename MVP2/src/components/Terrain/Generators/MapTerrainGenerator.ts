@@ -1,12 +1,11 @@
-import {Vector2, Vector3} from "three";
+import {PlaneGeometry, Vector2, Vector3} from "three";
 import {ITerrainGenerator} from "./ITerrainGenerator";
 import {Terrain} from "../TerrainMatthias";
-import $ from "jquery";
 import m from "mithril";
 import CustomImageData from "./CustomImageData";
 
 export class MapTerrainGenerator implements ITerrainGenerator {
-    private vertices: Vector3[];
+    
     private width: number;
     private height: number;
     private verticesX: number;
@@ -16,29 +15,36 @@ export class MapTerrainGenerator implements ITerrainGenerator {
     private centerLongitude: number;
 
     constructor() {
-        this.vertices = [];
         this.width = 1;
         this.height = 1;
         this.verticesX = 1;
         this.verticesY = 1;
 
+        // Values Traunstein
+        this.centerLongitude = 13.8361;
+        this.centerLatitude = 47.8722;
+
+        // Values Hagenberg
         this.centerLongitude = 14.515;
         this.centerLatitude = 48.368;
     }
 
-    generate(width: number = 1024, height: number = 1024, verticesX: number = 128, verticesY: number = 128): Terrain {
-        //this.vertices = new Array(verticesX * verticesY);
-        this.vertices = [];
+    generate(width: number = 1024, height: number = 1024, verticesX: number = 64, verticesY: number = 64): Terrain {
         this.width = width;
         this.height = height;
         this.verticesX = verticesX;
         this.verticesY = verticesY;
+    
+        let imageData: CustomImageData = this.getTileDataAt(MapTerrainGenerator.getTileIndices(this.centerLongitude, this.centerLatitude, 10));
+        
+        let planeGeometry: PlaneGeometry = new PlaneGeometry(width, height, verticesX - 1, verticesY - 1);
+        let terrain = new Terrain(planeGeometry, this.verticesX, this.verticesY);
+        imageData.addReceiver(terrain);
 
         const stepSizeX = this.width / this.verticesX;
         const stepSizeY = this.height / this.verticesY;
 
         //this.getTileDataAt(this.getLongitudeCoordinateForDataPoint(500), this.getLatitudeCoordinateForDataPoint(500), 15.5);
-        let imageData: CustomImageData = this.getTileDataAt(this.getTileIndices(13.8361, 47.8722, 10));
 
         console.log(imageData);
 
@@ -47,7 +53,6 @@ export class MapTerrainGenerator implements ITerrainGenerator {
         {
             console.log("waiting ...");
         }
-         */
 
         for (let y = 0; y < this.verticesY; y++) {
             for (let x = 0; x < this.verticesX; x++) {
@@ -56,13 +61,9 @@ export class MapTerrainGenerator implements ITerrainGenerator {
                 this.vertices.push(new Vector3(-this.width / 2 + x * stepSizeX, -this.height / 2 + y * stepSizeY, 0));
             }
         }
-
-        let terrain = new Terrain(this.vertices, this.verticesX, this.verticesY, this.width, this.height);
-        imageData.addReceiver(terrain);
+    */
 
         //this.smoothTerrain(8, 0.5);
-
-        console.info("Smoothing done");
 
         return terrain;
     }
@@ -79,8 +80,8 @@ export class MapTerrainGenerator implements ITerrainGenerator {
         return this.centerLongitude - longitudeDifference / 2 + longitudeDifference / (this.verticesX - 1) * x;
     }
 
-    private getTileIndices(longitude: number, latitude: number, zoomLevel: number = 14): Vector3 {
-        let tileSize = this.getTileSize(zoomLevel);
+    private static getTileIndices(longitude: number, latitude: number, zoomLevel: number = 14): Vector3 {
+        let tileSize = MapTerrainGenerator.getTileSize(zoomLevel);
 
         let worldSize = tileSize * Math.pow(2, zoomLevel);
 
@@ -96,12 +97,12 @@ export class MapTerrainGenerator implements ITerrainGenerator {
 
     private getTileDataAt(tileIndices: Vector3): CustomImageData {
         // Construct the API request
-        const query = "https://api.mapbox.com/v4/mapbox.terrain-rgb/" + tileIndices.z + "/" + tileIndices.x + "/" + tileIndices.y + ".pngraw?access_token=pk.eyJ1IjoibXVlZ2dyb2dvbmRyb2xsYSIsImEiOiJjazJ4ZjEyY2kwYjBzM2dvbWVoYjF4MndnIn0.CkaTPt0RObUkNLIUiWSecg";
+        const query = "https://api.mapbox.com/v4/mapbox.terrain-rgb/" + tileIndices.z + "/" + tileIndices.x + "/" + tileIndices.y + "@2x.pngraw?access_token=pk.eyJ1IjoibXVlZ2dyb2dvbmRyb2xsYSIsImEiOiJjazJ4ZjEyY2kwYjBzM2dvbWVoYjF4MndnIn0.CkaTPt0RObUkNLIUiWSecg";
         console.log(query);
 
         let canvas = document.createElement("canvas");
-        canvas.width = this.getTileSize(tileIndices.z);
-        canvas.height = this.getTileSize(tileIndices.z);
+        canvas.width = MapTerrainGenerator.getTileSize(tileIndices.z);
+        canvas.height = MapTerrainGenerator.getTileSize(tileIndices.z);
         let context: CanvasRenderingContext2D = canvas.getContext("2d") as CanvasRenderingContext2D;
 
         let totalImageData = new CustomImageData(canvas.width, canvas.height);
@@ -113,6 +114,9 @@ export class MapTerrainGenerator implements ITerrainGenerator {
 
             image.onload = () => {
                 context.drawImage(image, 0, 0);
+                
+                console.log("Image size: " + image.width + "x" + image.height);
+                console.log("Canvas size: " + canvas.width + "x" + canvas.height);
 
                 for (let x = 0; x < canvas.width; x++) {
                     for (let y = 0; y < canvas.height; y++) {
@@ -122,7 +126,7 @@ export class MapTerrainGenerator implements ITerrainGenerator {
 
                         if (currentStatus !== lastOut) {
                             lastOut = currentStatus;
-                            console.log(currentStatus + "%");
+                            // console.log("Processing image: " + currentStatus + "%");
                         }
                     }
                 }
@@ -150,7 +154,7 @@ export class MapTerrainGenerator implements ITerrainGenerator {
         */
     }
 
-    private getTileSize(zoomLevel: number): number {
+    private static getTileSize(zoomLevel: number): number {
         return (zoomLevel >= 15) ? 256 : 512;
     }
 

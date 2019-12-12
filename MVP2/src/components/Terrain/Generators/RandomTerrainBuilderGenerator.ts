@@ -1,4 +1,4 @@
-import {Vector2, Vector3} from "three";
+import {PlaneGeometry, Vector2, Vector3} from "three";
 import {ITerrainGenerator} from "./ITerrainGenerator";
 import {Terrain} from "../TerrainMatthias";
 
@@ -51,8 +51,10 @@ export class RandomTerrainBuilderGenerator implements ITerrainGenerator
 			this.addCosineHill(Math.random() * width, Math.random() * height);
 		}
 		while (Math.random() > 0.1);
-
-		let terrain = new Terrain(this.vertices, this.verticesX, this.verticesY, this.width, this.height);
+		
+		// TODO: Test, if this works with setFromPoints
+		let planeGeometry: PlaneGeometry = new PlaneGeometry().setFromPoints(this.vertices);
+		let terrain = new Terrain(planeGeometry, this.verticesX, this.verticesY);
 
 		//terrain.smooth(8, 0.5);
 

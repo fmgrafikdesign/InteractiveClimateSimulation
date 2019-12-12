@@ -1,33 +1,34 @@
 import {Terrain} from "./TerrainMatthias";
-import * as THREE from "three";
 import {
-	AmbientLight,
+	AmbientLight, AnimationUtils,
 	AxesHelper,
 	BoxGeometry,
-	Camera,
 	Color,
 	DirectionalLight,
+	Geometry,
 	Light,
-	Mesh,
+	Material,
+	Mesh, MeshLambertMaterial,
 	MeshPhongMaterial,
 	Object3D,
 	PerspectiveCamera,
 	Scene,
-	Vector3,
-	WebGLRenderer
+	Vector3
 } from "three";
 import TerrainRenderer from "./TerrainRenderer";
-import m, {Vnode} from "mithril";
-import {RandomTerrainBuilderGenerator} from "./Generators/RandomTerrainBuilderGenerator";
+import {Vnode} from "mithril";
 import {OrbitControls} from "three-orbitcontrols-ts";
-import {options} from "./Generators/GeneratorOptions/GeneratorOptions";
 import {ITerrainGenerator} from "./Generators/ITerrainGenerator";
 import {MapTerrainGenerator} from "./Generators/MapTerrainGenerator";
+import IMessageReceiver from "../MessageSystem/IMessageReceiver";
+import IMessage from "../MessageSystem/IMessage";
+import IMessageSender from "../MessageSystem/IMessageSender";
+import VariableChangedMessage from "../MessageSystem/VariableChangedMessage";
+import getKeyFrameOrder = AnimationUtils.getKeyFrameOrder;
 
 
-export default class Level
+export default class Level implements IMessageReceiver
 {
-
 	get terrain(): Terrain
 	{
 		return this._terrain;
@@ -48,19 +49,26 @@ export default class Level
 	private _scene: Scene;
 	private ligths: Light[];
 	private renderer: TerrainRenderer;
+	private parent: Object3D;
+	
 	private canvasWidth: number;
 	private canvasHeight: number;
+	private defaultMeshFaceMaterial: Material;
 
 	constructor(vnode: Vnode<any>)
 	{
 		console.log("Starting level");
 		console.log(vnode);
 		this._terrain = this.getConfiguredTerrain(vnode.attrs.config);
+		this._terrain.addReceiver(this);
 
 		this._camera = new PerspectiveCamera();
 		this._scene = new Scene();
 		this.ligths = [];
 		this.renderer = new TerrainRenderer(this);
+		this.parent = new Object3D();
+		this.defaultMeshFaceMaterial = new MeshLambertMaterial({color: new Color(1, 0.8, 0.5), wireframe: false, flatShading: true});
+		
 		this.canvasWidth = 100;
 		this.canvasHeight = 100;
 
@@ -83,7 +91,10 @@ export default class Level
 
 	setTerrain(terrain: Terrain)
 	{
+		this._terrain.removeReceiver(this);
+		
 		this._terrain = terrain;
+		this._terrain.addReceiver(this);
 		this.setup();
 	}
 
@@ -151,18 +162,29 @@ export default class Level
 		 * @type {BoxGeometry|BoxGeometry}
 		 */
 		let cubeGeometry = new BoxGeometry(1, 1, 1);
-		let material = new MeshPhongMaterial({color: new Color(1, 0.8, 0.5), wireframe: false});
+		
+		this.changeGeometry();
 
-		this._terrain.generateMesh();
-		this._terrain.mesh.material = material;
-
-		this._scene.add(this._terrain.mesh);
+		this._scene.add(this.parent);
 
 		/** Test cube
         const cube = new Mesh(cubeGeometry, material);
         cube.castShadow = true;
         //cube.position.z = 6;
         this.scene.add(cube); */
+	}
+	
+	private changeGeometry(geometry: Geometry = this._terrain.mesh.geometry as Geometry)
+	{
+		const tempGeometry: Geometry = geometry;
+		this.parent.remove(this._terrain.mesh);
+		this._terrain.mesh.geometry.dispose();
+		
+		this._terrain.mesh = new Mesh(tempGeometry, this.defaultMeshFaceMaterial);
+		
+		this.parent.add(this._terrain.mesh);
+		
+		this.resetCameraProperties();
 	}
 
 	private getCanvasDimensions()
@@ -181,7 +203,7 @@ export default class Level
 	{
 		this._camera.up.set(0, 0, 1);
 		// this.camera.position.z = 3;
-		this._camera.position.set(700, -700, 400);
+		this._camera.position.set(700, -700, this._terrain.getHighestPoint() * 1.3);
 		// this._camera.position.set(1, 1.5, 1);
 		this._camera.lookAt(new Vector3(0, 0, 0));
 		this._camera.aspect = this.canvasWidth / this.canvasHeight;
@@ -191,5 +213,14 @@ export default class Level
 	rotateCameraAroundCenter(degreesToRotate: number)
 	{
 
+	}
+	
+	receiveMessage(message: IMessage, sender: IMessageSender): void
+	{
+		const convertedMessage: VariableChangedMessage = message as VariableChangedMessage;
+		if (convertedMessage.variablesThatChanged[0] === "mesh")
+		{
+			this.changeGeometry();
+		}
 	}
 }
