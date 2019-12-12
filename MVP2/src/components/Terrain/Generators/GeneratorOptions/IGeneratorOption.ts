@@ -1,4 +1,5 @@
 import {GeneratorOptions} from "./GeneratorOptions";
+import {ITerrainGenerator} from "../ITerrainGenerator";
 
 export interface IGeneratorOption {
     type: GeneratorOptions;

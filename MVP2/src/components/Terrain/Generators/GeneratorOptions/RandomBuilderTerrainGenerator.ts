@@ -1,5 +1,6 @@
 import {IGeneratorOption} from "./IGeneratorOption";
 import {GeneratorOptions} from "./GeneratorOptions";
+import {ITerrainGenerator} from "../ITerrainGenerator";
 
 export class RandomBuilderTerrainGenerator implements IGeneratorOption {
     description: string = "generates a terrain, where hills and valleys are added randomly to a blank terrain";

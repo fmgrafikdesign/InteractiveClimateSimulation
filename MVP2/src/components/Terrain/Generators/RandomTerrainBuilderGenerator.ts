@@ -52,11 +52,13 @@ export class RandomTerrainBuilderGenerator implements ITerrainGenerator
 		}
 		while (Math.random() > 0.1);
 
-		this.smoothTerrain(8, 0.5);
+		let terrain = new Terrain(this.vertices, this.verticesX, this.verticesY, this.width, this.height);
+
+		//terrain.smooth(8, 0.5);
 
 		console.info("Smoothing done");
 
-		return new Terrain(this.vertices, this.verticesX, this.verticesY, this.width, this.height);
+		return terrain;
 	}
 
 	addCosineHill(hillCenterX : number, hillCenterY : number)
@@ -79,38 +81,6 @@ export class RandomTerrainBuilderGenerator implements ITerrainGenerator
 				const currentVector = this.vertices[x + y * this.verticesX];
 				const distance = new Vector2(hillCenterX, hillCenterY).distanceTo(new Vector2(currentVector.x, currentVector.y));
 				currentVector.z += (Math.abs(distance) < hillDiameter / 2) ? ((Math.cos(Math.abs(distance) * Math.PI * 2 / hillDiameter) + 1) * hillHeight) : 0;
-			}
-		}
-	}
-
-	smoothTerrain(radius : number, strength : number, iterations = 5)
-	{
-		for (let iteration = 0; iteration < iterations; iteration++)
-		{
-			const verticesBefore = this.vertices;
-
-			for (let y = 0; y < this.verticesY; y++)
-			{
-				for (let x = 0; x < this.verticesX; x++)
-				{
-					let zSum = 0;
-					let counter = 0;
-
-					for (let ySmoothing = y - radius; ySmoothing < y + radius; ySmoothing++)
-					{
-						for (let xSmoothing = x - radius; xSmoothing < x + radius; xSmoothing++)
-						{
-							if (ySmoothing >= 0 && ySmoothing < this.verticesY && xSmoothing >= 0 && xSmoothing < this.verticesX)
-							{
-								zSum += verticesBefore[xSmoothing + ySmoothing * this.verticesX].z;
-								counter++;
-							}
-						}
-					}
-
-					const zMiddle = zSum / counter;
-					this.vertices[x + y * this.verticesX].z += (zMiddle - verticesBefore[x + y * this.verticesX].z) * Math.max(0, Math.min(1, strength));
-				}
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-import m from 'mithril';
+import m, {Vnode} from 'mithril';
 import {RandomBuilderTerrainGenerator} from "../Terrain/Generators/GeneratorOptions/RandomBuilderTerrainGenerator";
 import {RandomTerrainBuilderGenerator} from "../Terrain/Generators/RandomTerrainBuilderGenerator";
 
@@ -12,14 +12,15 @@ const ConfigMenu: m.ClosureComponent = (vnode) => {
             console.log("Attrs in oninit: ");
             console.log(attrs);
         },
-        oncreate (vnode) {
+        oncreate (vnode: Vnode<any>) {
 
             m("div", "Generating terrain");
 
             console.log("VNode in oncreate: ");
             console.log(vnode);
 
-            m.route.set("/level"/*, {terrain: new RandomTerrainBuilderGenerator()}*/);
+            //m.route.set("/level"/*, {terrain: new RandomTerrainBuilderGenerator()}*/);
+            m.route.set("/level/:config", {config: {type: vnode.attrs.type}});
 
 /*            const initMenuHeadline = document.createElement("h1");
             initMenuHeadline.classList.add("Init-Menu-Headline");
