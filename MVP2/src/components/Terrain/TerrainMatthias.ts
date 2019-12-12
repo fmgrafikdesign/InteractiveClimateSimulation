@@ -164,7 +164,7 @@ export class Terrain extends AbstractMessageSender implements IMessageReceiver
 			// smooth the terrain over several iterations with increasing radius
             for (let i = 1; i < 8; i++)
             {
-                this.smooth(i, 0.25, 1);
+                this.smooth(i, 0.01, 1);
             }
 			
 			//this._mesh.geometry.computeVertexNormals();

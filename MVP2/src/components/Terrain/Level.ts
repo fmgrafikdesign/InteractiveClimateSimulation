@@ -1,6 +1,6 @@
 import {Terrain} from "./TerrainMatthias";
 import {
-	AmbientLight, AnimationUtils,
+	AmbientLight,
 	AxesHelper,
 	BoxGeometry,
 	Color,
@@ -8,8 +8,8 @@ import {
 	Geometry,
 	Light,
 	Material,
-	Mesh, MeshLambertMaterial,
-	MeshPhongMaterial,
+	Mesh,
+	MeshLambertMaterial,
 	Object3D,
 	PerspectiveCamera,
 	Scene,
@@ -24,26 +24,10 @@ import IMessageReceiver from "../MessageSystem/IMessageReceiver";
 import IMessage from "../MessageSystem/IMessage";
 import IMessageSender from "../MessageSystem/IMessageSender";
 import VariableChangedMessage from "../MessageSystem/VariableChangedMessage";
-import getKeyFrameOrder = AnimationUtils.getKeyFrameOrder;
 
 
 export default class Level implements IMessageReceiver
 {
-	get terrain(): Terrain
-	{
-		return this._terrain;
-	}
-
-	get camera(): PerspectiveCamera
-	{
-		return this._camera;
-	}
-
-	get scene(): Scene
-	{
-		return this._scene;
-	}
-
 	private _terrain: Terrain;
 	private _camera: PerspectiveCamera;
 	private _scene: Scene;
@@ -213,6 +197,21 @@ export default class Level implements IMessageReceiver
 	rotateCameraAroundCenter(degreesToRotate: number)
 	{
 
+	}
+	
+	get terrain(): Terrain
+	{
+		return this._terrain;
+	}
+	
+	get camera(): PerspectiveCamera
+	{
+		return this._camera;
+	}
+	
+	get scene(): Scene
+	{
+		return this._scene;
 	}
 	
 	receiveMessage(message: IMessage, sender: IMessageSender): void

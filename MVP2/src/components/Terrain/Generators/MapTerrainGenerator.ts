@@ -13,6 +13,7 @@ export class MapTerrainGenerator implements ITerrainGenerator {
 
     private centerLatitude: number;
     private centerLongitude: number;
+    private zoomLevel: number;
 
     constructor() {
         this.width = 1;
@@ -23,10 +24,12 @@ export class MapTerrainGenerator implements ITerrainGenerator {
         // Values Traunstein
         this.centerLongitude = 13.8361;
         this.centerLatitude = 47.8722;
+        this.zoomLevel = 10;
 
         // Values Hagenberg
         this.centerLongitude = 14.515;
         this.centerLatitude = 48.368;
+        this.zoomLevel = 13;
     }
 
     generate(width: number = 1024, height: number = 1024, verticesX: number = 64, verticesY: number = 64): Terrain {
@@ -35,7 +38,7 @@ export class MapTerrainGenerator implements ITerrainGenerator {
         this.verticesX = verticesX;
         this.verticesY = verticesY;
     
-        let imageData: CustomImageData = this.getTileDataAt(MapTerrainGenerator.getTileIndices(this.centerLongitude, this.centerLatitude, 10));
+        let imageData: CustomImageData = this.getTileDataAt(MapTerrainGenerator.getTileIndices(this.centerLongitude, this.centerLatitude, this.zoomLevel));
         
         let planeGeometry: PlaneGeometry = new PlaneGeometry(width, height, verticesX - 1, verticesY - 1);
         let terrain = new Terrain(planeGeometry, this.verticesX, this.verticesY);
