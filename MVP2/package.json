@@ -11,7 +11,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "mapbox-gl": "^1.5.1",
+    "@types/mapbox-gl": "^1.6.1",
+    "mapbox-gl": "^1.6.0",
     "mithril": "^2.0.4",
     "simplex-noise": "^2.4.0",
     "three": "^0.109.0",

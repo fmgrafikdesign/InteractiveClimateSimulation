@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ac743204-bdb5-4fa9-a11e-f7bf7f69702e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/MVP1/src/components/Menus/ConfigMenu.ts" beforeDir="false" afterPath="$PROJECT_DIR$/MVP1/src/components/Menus/ConfigMenu.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MVP1/src/components/Menus/InitMenu.ts" beforeDir="false" afterPath="$PROJECT_DIR$/MVP1/src/components/Menus/InitMenu.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MVP1/src/components/Terrain/Generators/GeneratorOptions/GeneratorOptions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/MVP1/src/components/Terrain/Generators/GeneratorOptions/GeneratorOptions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MVP1/src/components/Terrain/Generators/GeneratorOptions/IGeneratorOption.ts" beforeDir="false" afterPath="$PROJECT_DIR$/MVP1/src/components/Terrain/Generators/GeneratorOptions/IGeneratorOption.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MVP1/src/components/Terrain/Generators/GeneratorOptions/RandomBuilderTerrainGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/MVP1/src/components/Terrain/Generators/GeneratorOptions/RandomBuilderTerrainGenerator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MVP1/src/components/Terrain/Generators/RandomTerrainGenerator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/MVP1/src/components/Terrain/Generators/RandomTerrainGenerator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MVP1/src/components/Terrain/Level.ts" beforeDir="false" afterPath="$PROJECT_DIR$/MVP1/src/components/Terrain/Level.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MVP1/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/MVP1/src/main.ts" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1Th4H4IrlS3xyjpN33z9lXlSyjn" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/MVP1/src/components/Terrain/Controls" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.22074468" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.folding" />
+    <property name="ts.external.directory.path" value="G:\Programmordner\OneDrive\OneDrive - students.fh-hagenberg.at\FH\Master 1. Semester\Semesterprojekt\InteractiveClimateSimulation\MVP1\node_modules\typescript\lib" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Programmordner\OneDrive\OneDrive - students.fh-hagenberg.at\FH\Master 1. Semester\Semesterprojekt\InteractiveClimateSimulation\MVP1\src\components\Terrain\Controls" />
+      <recent name="G:\Programmordner\OneDrive\OneDrive - students.fh-hagenberg.at\FH\Master 1. Semester\Semesterprojekt\InteractiveClimateSimulation\MVP1\public\js" />
+      <recent name="D:\Programmordner\OneDrive\OneDrive - students.fh-hagenberg.at\FH\Master 1. Semester\Semesterprojekt\InteractiveClimateSimulation\MVP1\src\components\Terrain" />
+      <recent name="D:\Programmordner\OneDrive\OneDrive - students.fh-hagenberg.at\FH\Master 1. Semester\Semesterprojekt\InteractiveClimateSimulation\MVP1\src\components\Terrain\Generators" />
+      <recent name="G:\Programmordner\OneDrive\OneDrive - students.fh-hagenberg.at\FH\Master 1. Semester\Semesterprojekt\InteractiveClimateSimulation\MVP1\src\components\Terrain\Generators" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\Programmordner\OneDrive\OneDrive - students.fh-hagenberg.at\FH\Master 1. Semester\Semesterprojekt\InteractiveClimateSimulation\MVP1\src\components\Terrain" />
+      <recent name="D:\Programmordner\OneDrive\OneDrive - students.fh-hagenberg.at\FH\Master 1. Semester\Semesterprojekt\InteractiveClimateSimulation\MVP1\src\components\Terrain\Generators\GeneratorOptions" />
+      <recent name="G:\Programmordner\OneDrive\OneDrive - students.fh-hagenberg.at\FH\Master 1. Semester\Semesterprojekt\InteractiveClimateSimulation\MVP1\src\components\Terrain\Generators" />
+      <recent name="G:\Programmordner\OneDrive\OneDrive - students.fh-hagenberg.at\FH\Master 1. Semester\Semesterprojekt\InteractiveClimateSimulation\MVP1\src\components\Menus" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="npm.compile">
+    <configuration name="build (1)" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/node_modules/three/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/MVP1/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="clean" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/MVP1/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="clean" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="compile" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/MVP1/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="compile" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/MVP1/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="npm.build" />
+      <item itemvalue="npm.clean" />
+      <item itemvalue="npm.compile" />
+      <item itemvalue="npm.start" />
+      <item itemvalue="npm.build (1)" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.compile" />
+        <item itemvalue="npm.start" />
+        <item itemvalue="npm.build" />
+        <item itemvalue="npm.build (1)" />
+        <item itemvalue="npm.clean" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ac743204-bdb5-4fa9-a11e-f7bf7f69702e" name="Default Changelist" comment="" />
+      <created>1573898901398</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1573898901398</updated>
+      <workItem from="1573898903466" duration="3441000" />
+      <workItem from="1573902432685" duration="5837000" />
+      <workItem from="1573922406243" duration="8467000" />
+      <workItem from="1574234994151" duration="6413000" />
+      <workItem from="1574321282079" duration="8579000" />
+      <workItem from="1574353407366" duration="281000" />
+      <workItem from="1574355479581" duration="7799000" />
+      <workItem from="1574707084979" duration="2279000" />
+      <workItem from="1574840590651" duration="2189000" />
+      <workItem from="1574842817478" duration="7299000" />
+      <workItem from="1575398792343" duration="105000" />
+    </task>
+    <task id="LOCAL-00001" summary="Matthias' initial push -&gt; all existing files added and embedded;&#10;initial menu added (not functional yet)">
+      <created>1574363035055</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1574363035055</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Adding camera Controls">
+      <created>1574851583536</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1574851583536</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/../Testproject/js/TerrainGenerators/ITerrainGenerator.js" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Matthias' initial push -&gt; all existing files added and embedded;&#10;initial menu added (not functional yet)" />
+    <MESSAGE value="Adding camera Controls" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding camera Controls" />
+  </component>
+</project>
