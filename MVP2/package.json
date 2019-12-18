@@ -16,6 +16,7 @@
     "simplex-noise": "^2.4.0",
     "three": "^0.109.0",
     "three-orbitcontrols-ts": "^0.1.2",
+    "ts-debounce": "^1.0.0",
     "webmidi": "^2.5.1"
   },
   "devDependencies": {

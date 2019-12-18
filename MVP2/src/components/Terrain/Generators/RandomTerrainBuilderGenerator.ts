@@ -1,6 +1,6 @@
 import {PlaneGeometry, Vector2, Vector3} from "three";
 import {ITerrainGenerator} from "./ITerrainGenerator";
-import {Terrain} from "../TerrainMatthias";
+import {Terrain} from "../TerrainFabian";
 
 
 export class RandomTerrainBuilderGenerator implements ITerrainGenerator

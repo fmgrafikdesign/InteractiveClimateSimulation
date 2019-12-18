@@ -7,7 +7,6 @@ import CustomImageData from "./Generators/CustomImageData";
 import {MapTerrainGenerator} from "./Generators/MapTerrainGenerator";
 import AbstractMessageSender from "../MessageSystem/AbstractMessageSender";
 
-
 export class Terrain extends AbstractMessageSender implements IMessageReceiver
 {
 	constructor(geometry: Geometry, nrOfVerticesX: number = 50, nrOfVerticesY: number = 50)
@@ -17,9 +16,10 @@ export class Terrain extends AbstractMessageSender implements IMessageReceiver
 		this.nrOfVerticesY = nrOfVerticesY;
 		
 		this.geometry = geometry;
-		const material: Material = new MeshPhongMaterial({color: new Color(1, 1, 1)}); // dummy material -> gets overridden in Level.ts
-		
-		//planeGeometry.computeVertexNormals();
+
+		// dummy material -> gets overridden in TerrainViewMatthias.tsiew.ts
+		const material: Material = new MeshPhongMaterial({color: new Color(1, 1, 1)});
+
 		this._mesh = new Mesh(geometry, material);
 	}
 	
@@ -114,7 +114,7 @@ export class Terrain extends AbstractMessageSender implements IMessageReceiver
 			}
 		}
         
-        console.info("Smoothing done");
+        // console.info("Smoothing done");
 	}
 	
 	
@@ -130,10 +130,10 @@ export class Terrain extends AbstractMessageSender implements IMessageReceiver
 	
 	receiveMessage(message: IMessage, sender: IMessageSender): void
 	{
-		console.log("Received message!");
-		console.log(message);
+		// console.log("Received message!");
+		// console.log(message);
 		
-		console.log(sender);
+		// console.log(sender);
 		
 		const convertedMessage: VariableChangedMessage = message as VariableChangedMessage;
 		
@@ -144,29 +144,26 @@ export class Terrain extends AbstractMessageSender implements IMessageReceiver
 			let pixelsPerIndexX = imageData.getWidth() / this.nrOfVerticesX;
 			let pixelsPerIndexY = imageData.getHeight() / this.nrOfVerticesY;
 			
-			console.log("Starting to apply height information to the mesh");
+			// console.log("Starting to apply height information to the mesh");
 			
 			for (let y = 0; y < this.nrOfVerticesY; y++)
 			{
 				for (let x = 0; x < this.nrOfVerticesX; x++)
 				{
-					//console.log(x * pixelsPerIndexX + ", " + y * pixelsPerIndexY + ": " + imageData.getValueAt(x * pixelsPerIndexX, y * pixelsPerIndexY));
-					let height = MapTerrainGenerator.getHeightFromRGBA(imageData.getValueAt(x * pixelsPerIndexX, y * pixelsPerIndexY));
+					const height = MapTerrainGenerator.getHeightFromRGBA(imageData.getValueAt(x * pixelsPerIndexX, y * pixelsPerIndexY));
 					this.setZValue(x, y, height);
-					//console.log(x * pixelsPerIndexX + ", " + y * pixelsPerIndexY + ": " + height);
 				}
 			}
-			console.log("Done manipulating the mesh");
+			// console.log("Done manipulating the mesh");
 			
-			console.log("Mesh width: " + this.getWidth());
-			console.log("Mesh height: " + this.getHeight());
+			// console.log("Mesh width: " + this.getWidth());
+			// console.log("Mesh height: " + this.getHeight());
    
 			// smooth the terrain over several iterations with increasing radius
-            for (let i = 1; i < 8; i++)
-            {
+            for (let i = 1; i < 8; i++) {
                 this.smooth(i, 0.01, 1);
             }
-			
+
 			//this._mesh.geometry.computeVertexNormals();
             (this._mesh.geometry as Geometry).computeFlatVertexNormals();
 			this.sendMessage(new VariableChangedMessage(["mesh"]));
@@ -177,7 +174,7 @@ export class Terrain extends AbstractMessageSender implements IMessageReceiver
 			//this._mesh.geometry.computeVertexNormals();
 		}
 	}
-	
+
 	private getWidth(): number
 	{
 		this._mesh.geometry.computeBoundingBox();

@@ -1,4 +1,51 @@
-@import "initMenu.css";
+.Init-Menu-Headline {
+  width: 98%;
+  margin: 1.5em auto;
+  text-align: center;
+}
+
+.Init-Menu-Items-Container {
+  width: 95%;
+  display: flex;
+  justify-content: space-around;
+  margin: 2em;
+  padding: 1em;
+  flex-wrap: wrap;
+}
+
+.Init-Menu-Item-Wrapper {
+  cursor: pointer;
+  margin: 1em;
+}
+
+.Init-Menu-Item {
+  width: 20em;
+  height: 20em;
+  display: flex;
+  background-color: rgba(0, 0, 255, 0.2);
+  padding: 1em;
+  text-align: center;
+  transition: 0.75s ease;
+}
+
+.Init-Menu-Item:hover {
+  background-color: rgba(0, 0, 255, 0.4);
+  font-size: 1.2em;
+}
+
+.Init-Menu-Item > h3 {
+  margin: auto;
+}
+
+.Selected {
+  -webkit-transition: 0.5s ease;
+  -moz-transition: 0.5s ease;
+  -ms-transition: 0.5s ease;
+  -o-transition: 0.5s ease;
+  transition: 0.5s ease;
+  background-color: #006600 !important;
+  font-size: 1.25em !important;
+}
 
 body, td, th {
   font-family: helvetica, arial, sans-serif;
@@ -8,16 +55,19 @@ body, td, th {
 body, html {
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 
-#Canvas-Container {
-  width: 98%;
-  height: 95%;
-  margin: auto;
+#canvas-container {
+  width: 100%;
+  margin: 0;
+  height: 100%;
 }
 
-#Canvas {
+#map-canvas {
   width: 100%;
   height: 100%;
   display: block;
 }
+
+/*# sourceMappingURL=style.css.map */
