@@ -1,4 +1,4 @@
-# MVP1
+# MVP2
 
 A web application in which the user can manipulate a pre-defined terrain on his screen over time by turning X physical knobs.
 

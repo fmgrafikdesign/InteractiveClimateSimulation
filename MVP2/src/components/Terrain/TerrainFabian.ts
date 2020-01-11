@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import {Color, Vector3, MeshPhongMaterial, PlaneGeometry, Mesh, Geometry, Material} from "three";
+import LngLatTerrainGenerator from "./Generators/LngLatTerrainGenerator";
 
 export class Terrain {
     private vertices: Vector3[];
@@ -47,24 +48,33 @@ export class Terrain {
             vertexColors: THREE.VertexColors
         });
 
+        // Rotate mesh so Z is the new Y coordinate.
+        this.geometry.rotateX(-Math.PI / 2);
+
         this.mesh = new Mesh(this.geometry, material);
-        // console.log("Terrain mesh has been updated.");
-        // console.log(this.geometry);
-        // console.log(this.mesh);
     }
 
     private updateMeshColors() {
+
+        let min_height = LngLatTerrainGenerator.getHeightFromRGBA(255, 255, 255);
+        let max_height = 0;
+
         this.geometry.faces.forEach((face) => {
             const a = this.geometry.vertices[face.a];
             const b = this.geometry.vertices[face.b];
             const c = this.geometry.vertices[face.c];
 
-            const averageHeight = (a.z + b.z + c.z) / 3;
-            if (averageHeight <= 0) {
+            const average = (a.z + b.z + c.z) / 3;
+            if (average <= 0) {
                 a.z = 0;
                 b.z = 0;
                 c.z = 0;
             }
+
+            // TODO use min and max heights to get a better idea on what colors to use (for height-based representation)
+            // Store min and max heights
+            if(min_height > average) min_height = average;
+            if(max_height < average) max_height = average;
 
             // Assign color based on highest point of the face
             const max = Math.max(a.z, Math.max(b.z, c.z));
@@ -80,6 +90,8 @@ export class Terrain {
             }
 
         });
+
+        console.log(min_height, max_height);
 
         this.geometry.colorsNeedUpdate = true;
     }

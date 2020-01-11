@@ -32,7 +32,7 @@ export default function App(): m.Component {
 
 
             container = dom as HTMLElement;
-            canvas = container.querySelector('canvas#map-canvas') as HTMLCanvasElement;
+            canvas = container.querySelector('canvas#terrain-canvas') as HTMLCanvasElement;
 
             // renderer = new TerrainRenderer(canvas);
             //renderer = StaticTerrainRenderer;
@@ -51,7 +51,7 @@ export default function App(): m.Component {
             return m('.app',
                 [
                     m('#mapWrapper', m('div#map')),
-                    m('.canvas-wrapper', m('canvas#map-canvas')),
+                    m('.canvas-wrapper', m('canvas#terrain-canvas')),
                     m('.ui', [
                         // Arbitrary coordinates
                         m('.change-map-button', {onclick: () => generateTerrainWithLatLng(14.565, 48.378)}, 'Change Map')

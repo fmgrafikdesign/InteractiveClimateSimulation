@@ -39,6 +39,7 @@ export default class LngLatTerrainGenerator implements ITerrainGenerator {
 
     private zoomLevel: number = 13;
 
+    // TODO incorporate zoom level
     generate(lat?: number, lng?: number, width: number = 512, height: number = 512, verticesX: number = 64, verticesY: number = 64): Terrain {
         if (lat) {
             this.centerLatitude = lat;
@@ -48,12 +49,14 @@ export default class LngLatTerrainGenerator implements ITerrainGenerator {
         }
 
         let geometry = new THREE.PlaneGeometry(width, height, verticesX - 1, verticesY - 1);
+        geometry.rotateX(-Math.PI / 2);
         let terrain = new Terrain(geometry);
 
         // Update the Terrain geometry as we finish processing the image.
         this.getTileDataAt(LngLatTerrainGenerator.getTileIndices(this.centerLongitude, this.centerLatitude, this.zoomLevel))
             .then((data: ImageData) => {
                 geometry = this.generateGeometryFromMapboxElevationPNG(data, data.width, data.height, 10);
+//                geometry.rotateX(-Math.PI / 2);
                 StaticTerrainRenderer.updateTerrainGeometry(geometry);
             });
         return new Terrain(geometry, verticesX, verticesY, width, height);
@@ -81,6 +84,9 @@ export default class LngLatTerrainGenerator implements ITerrainGenerator {
 
         const geometry = new THREE.PlaneGeometry(width, height, data.width, data.height);
 
+        let min_height = LngLatTerrainGenerator.getHeightFromRGBA(255, 255, 255);
+        let max_height = 0;
+
         for (let currentYindex = 0; currentYindex < data.height; currentYindex++) {
             for (let currentXindex = 0; currentXindex < data.width; currentXindex++) {
                 const n = (currentYindex * (data.width) + currentXindex);
@@ -91,7 +97,10 @@ export default class LngLatTerrainGenerator implements ITerrainGenerator {
                 const b = data.data[n * 4 + 2];
                 const computedHeight = LngLatTerrainGenerator.getHeightFromRGBA(r, g, b);
 
-                const vertice = geometry.vertices[nn];
+                // Store min and max heights
+                if(min_height > computedHeight) min_height = computedHeight;
+                if(max_height < computedHeight) max_height = computedHeight;
+
                 /* TODO Calculate a proper way of putting the height in relation to approx. size in m per tile pixel. */
                 /* https://docs.mapbox.com/help/glossary/zoom-level/ */
                 /* TODO Remember to factor in latitude in the calculation, as it skews m/px. */
@@ -101,6 +110,7 @@ export default class LngLatTerrainGenerator implements ITerrainGenerator {
                 // With zoom level 13 and lat of 48, Hagenberg should be aprox. 6.800m/px
                 // So every vertice in our terrain is about 7km apart.
                 // That has nothing to do with the division by the way. I still need to properly calculate that.
+                const vertice = geometry.vertices[nn];
                 vertice.z = computedHeight / 7;
             }
         }
