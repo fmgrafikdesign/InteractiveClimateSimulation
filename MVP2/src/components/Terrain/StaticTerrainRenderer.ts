@@ -59,65 +59,69 @@ export default abstract class StaticTerrainRenderer {
         this.scene.add(this.terrain.mesh);
     }
 
-    static init(canvas: HTMLCanvasElement, terrain?: Terrain) {
+    static init(canvas: HTMLCanvasElement, cameraDistance: number = 400) {
         this.canvas = canvas;
-
-        const parameters = {canvas: this.canvas, antialias: true, castShadows: true};
-        this.renderer = new WebGLRenderer(parameters);
-        if (!this.renderer) {
-            throw new Error("Failed to create THREE.WebGLRenderer")
-        }
-        this.scene = new Scene();
+        this.frameCounter = 0;
 
         const rectangle = canvas.getBoundingClientRect();
         this.displayWidth = rectangle.width;
         this.displayHeight = rectangle.height;
 
+        this.setupRenderer();
+        this.setupScene();
+        this.setupSceneCamera(cameraDistance);
+        this.addSceneLights();
+        this.scene.add(this.terrain.mesh);
+
+        // this.addOrbitControls();
+        // this.addAxisHelper();
+        // this.initializeTerrainAdjustingControls();
+        // this.addCubeToTestRendering();
+
+        this.render();
+        this.watchForResize(cameraDistance);
+    }
+
+    private static setupScene() {
+        this.scene = new Scene();
+    }
+
+    private static setupRenderer() {
+        const parameters = {canvas: this.canvas, antialias: true, castShadows: true, alpha: true};
+        this.renderer = new WebGLRenderer(parameters);
+        if (!this.renderer) {
+            throw new Error("Failed to create THREE.WebGLRenderer")
+        }
         this.renderer.setSize(this.displayWidth, this.displayHeight);
+        this.renderer.setClearColor(0xffffff, 0);
+        // this.renderer.setClearAlpha(1.0);
+    }
 
-        const aspect = rectangle.width / rectangle.height;
-        const distance = 400;
-
-        // this.camera = new PerspectiveCamera(75, this.displayWidth / this.displayHeight, 1.0, 5000);
+    private static setupSceneCamera(distance: number) {
+        const aspect = this.displayWidth / this.displayHeight;
         this.camera = new OrthographicCamera(-distance * aspect, distance * aspect, distance, -distance, 1, 2000);
-
-        this.camera.position.set( distance, distance, distance);
-        this.camera.lookAt( this.scene.position );
-        this.camera.up.set(1,0,1);
+        this.camera.position.set(distance, distance, distance);
+        this.camera.lookAt(this.scene.position);
+        this.camera.up.set(1, 0, 1);
         this.camera.updateProjectionMatrix();
+    }
 
-        //this.camera.rotation.order = 'YXZ';
-        //this.camera.rotation.y = - Math.PI / 4;
-        //this.camera.rotation.x = Math.atan( - 1 / Math.sqrt( 2 ) );
-
+    private static addSceneLights() {
         const ambientLight = new AmbientLight(new Color(1, 1, 0.7), 0.15);
         const directionalLight = new DirectionalLight(new Color(1, 1, 0.9), 1);
         directionalLight.position.set(-10, 100, 10);
-
-        this.material = new MeshLambertMaterial({
-            flatShading: true,
-            vertexColors: VertexColors
-        });
-
-        // this.scene.add(controls as unknown as Object3D);
         this.scene.add(ambientLight);
         this.scene.add(directionalLight);
-        this.scene.add(this.terrain.mesh);
+    }
 
-        //this.addCubeToTestRendering();
+    private static addOrbitControls() {
+        const controls = new OrbitControls(this.camera, this.canvas);
+        controls.update();
+    }
 
-        this.frameCounter = 0;
-
-        //const controls = new OrbitControls(this.camera, this.canvas);
-        //controls.update();
-
+    private static addAxisHelper() {
         const axesHelper = new AxesHelper(700);
         this.scene.add(axesHelper);
-
-        StaticTerrainRenderer.render();
-
-        StaticTerrainRenderer.watchForResize(distance);
-        // StaticTerrainRenderer.initializeTerrainAdjustingControls();
     }
 
     static render() {
