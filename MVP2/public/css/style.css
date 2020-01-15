@@ -47,18 +47,6 @@
   font-size: 1.25em !important;
 }
 
-.app {
-  overflow: hidden;
-}
-
-#map {
-  height: 100%;
-}
-
-.app {
-  overflow: hidden;
-}
-
 #mapWrapper {
   height: 100%;
   width: 100%;
@@ -70,10 +58,22 @@
   top: 0;
   width: 100%;
   height: 100%;
+  position: relative;
+  overflow: hidden;
 }
 
 .Map-minimized {
   display: none;
+}
+
+.change-map-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 10;
+  background-color: #ffffff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 3px;
 }
 
 body, td, th {
@@ -81,9 +81,19 @@ body, td, th {
   font-size: 16px;
 }
 
+.d-none {
+  display: none !important;
+}
+
 .app {
   width: 100%;
   height: 100%;
+  background: #636363;
+  overflow: hidden;
+  background: -moz-linear-gradient(180deg, #636363 0%, #343434 55%, #222222 100%);
+  background: -webkit-linear-gradient(180deg, #636363 0%, #343434 55%, #222222 100%);
+  background: linear-gradient(180deg, #636363 0%, #343434 55%, #222222 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#636363",endColorstr="#222222",GradientType=1);
 }
 
 body, html {
@@ -108,6 +118,11 @@ body, html {
   width: 100%;
   height: 100%;
   display: block;
+}
+
+.terrain-components-wrapper {
+  width: 100%;
+  height: 100%;
 }
 
 /*# sourceMappingURL=style.css.map */

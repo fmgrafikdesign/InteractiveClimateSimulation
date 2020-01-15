@@ -38,8 +38,6 @@ export default abstract class StaticTerrainRenderer {
     static camera: OrthographicCamera;
     static frameCounter: number;
     static material: Material;
-    static displayWidth: number;
-    static displayHeight: number;
     static terrain: Terrain = StaticTerrainRenderer.generator.generate();
 
     static updateTerrainGeometry(geometry: PlaneGeometry) {
@@ -64,8 +62,6 @@ export default abstract class StaticTerrainRenderer {
         this.frameCounter = 0;
 
         const rectangle = canvas.getBoundingClientRect();
-        this.displayWidth = rectangle.width;
-        this.displayHeight = rectangle.height;
 
         this.setupRenderer();
         this.setupScene();
@@ -92,13 +88,13 @@ export default abstract class StaticTerrainRenderer {
         if (!this.renderer) {
             throw new Error("Failed to create THREE.WebGLRenderer")
         }
-        this.renderer.setSize(this.displayWidth, this.displayHeight);
-        this.renderer.setClearColor(0xffffff, 0);
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        //this.renderer.setClearColor(0xffffff, 0);
         // this.renderer.setClearAlpha(1.0);
     }
 
     private static setupSceneCamera(distance: number) {
-        const aspect = this.displayWidth / this.displayHeight;
+        const aspect = window.innerWidth / window.innerHeight;
         this.camera = new OrthographicCamera(-distance * aspect, distance * aspect, distance, -distance, 1, 2000);
         this.camera.position.set(distance, distance, distance);
         this.camera.lookAt(this.scene.position);
@@ -120,7 +116,7 @@ export default abstract class StaticTerrainRenderer {
     }
 
     private static addAxisHelper() {
-        const axesHelper = new AxesHelper(700);
+        const axesHelper = new AxesHelper(1700);
         this.scene.add(axesHelper);
     }
 
@@ -148,6 +144,10 @@ export default abstract class StaticTerrainRenderer {
             debouncedResize();
         });
 
+    }
+
+    static resize() {
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
     private static addCubeToTestRendering() {
