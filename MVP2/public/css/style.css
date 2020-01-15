@@ -49,21 +49,7 @@
 
 .app {
   overflow: hidden;
-}
-
-#map {
-  height: 100%;
-}
-
-.app {
-  overflow: hidden;
-}
-
-#mapWrapper {
-  height: 100%;
-  width: 100%;
-  position: relative;
-  overflow: hidden;
+  font-family: "Montserrat Thin", serif;
 }
 
 #map {
@@ -72,8 +58,98 @@
   height: 100%;
 }
 
-.Map-minimized {
-  display: none;
+#mapWrapper {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s ease;
+  transition-delay: 0s;
+}
+#mapWrapper.minimized {
+  height: 0 !important;
+  transition-delay: 1s !important;
+}
+
+.UI-Element {
+  backdrop-filter: blur(3px) brightness(85%);
+  transition: 0.3s ease;
+}
+.Map-Button {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 2.5em;
+  position: absolute;
+  transition: 0.3s ease;
+  transition-delay: 0s;
+}
+.Map-Button.active {
+  transition-delay: 1s;
+}
+.Map-Button#MapGetterButton {
+  top: -5em;
+}
+.Map-Button#MapGetterButton.active {
+  top: 1em !important;
+}
+.Map-Button#MapReturnButton {
+  transition-delay: 0s;
+  bottom: -5em;
+}
+.Map-Button#MapReturnButton.active {
+  bottom: 1em !important;
+}
+
+#helperInfo {
+  display: flex;
+  justify-content: center;
+  place-items: center;
+  width: 100%;
+  height: 2.5em;
+  top: 1em;
+  position: absolute;
+  font-weight: 700;
+  transition: 0.3s ease;
+  cursor: default;
+}
+#helperInfo div {
+  padding: 0.5em;
+}
+#helperInfo.minimized {
+  top: -5em;
+}
+
+.Map-Button-Label {
+  width: 10em;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  overflow: hidden;
+  transition: 0.3s ease;
+}
+.Map-Button-Label.Map-Getter-Button-Label {
+  border-bottom: 1px #b4b4b4 solid;
+}
+.Map-Button-Label.Map-Getter-Button-Label .icon {
+  margin: 1.25em 0.1em 2.5em;
+  transition: 0.3s ease;
+}
+.Map-Button-Label.Map-Return-Button-Label {
+  border-top: 1px #b4b4b4 solid;
+  justify-content: flex-end;
+}
+.Map-Button-Label.Map-Return-Button-Label .icon {
+  margin: 2.5em 0.1em 1.25em;
+  transition: 0.3s ease;
+}
+.Map-Button-Label:hover {
+  background-color: rgba(205, 205, 205, 0.2);
+}
+.Map-Button-Label:hover .icon {
+  margin: 0.1em;
 }
 
 body, td, th {

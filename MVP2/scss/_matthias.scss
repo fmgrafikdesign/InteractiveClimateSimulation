@@ -1,29 +1,134 @@
+$mapButtonHeight: 2.5em;
+$UIElementBorderMargin: 1em;
+$defaultTransitionTime: 0.3s;
 
 .app {
 	overflow: hidden;
+	font-family: "Montserrat Thin", serif;
 }
 
 #map {
+	top: 0;
+	width: 100%;
 	height: 100%;
 }
 
-.app {
-  overflow: hidden;
-}
-
 #mapWrapper {
-  height: 100%;
-  width: 100%;
-  position: relative;
-  overflow: hidden;
+	height: 100%;
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+	
+	transition: $defaultTransitionTime ease;
+	transition-delay: 0s;
+	
+	&.minimized {
+		height: 0 !important;
+		transition-delay: 1s !important;
+	}
 }
 
-#map {
-  top: 0;
-  width: 100%;
-  height: 100%;
+.UI-Element {
+	backdrop-filter: blur(3px) brightness(85%);
+	transition: $defaultTransitionTime ease;
+	
+	&:hover {
+	}
 }
 
-.Map-minimized {
-  display: none;
+.Map-Button {
+	display: flex;
+	justify-content: center;
+	
+	width: 100%;
+	height: $mapButtonHeight;
+	position: absolute;
+	
+	transition: $defaultTransitionTime ease;
+	transition-delay: 0s;
+	
+	&.active {
+		transition-delay: 1s;
+	}
+	
+	&#MapGetterButton {
+		top: -2 * $mapButtonHeight;
+		
+		&.active {
+			top: $UIElementBorderMargin !important;
+		}
+	}
+	
+	&#MapReturnButton {
+		transition-delay: 0s;
+		bottom: -2 * $mapButtonHeight;
+		
+		&.active {
+			bottom: $UIElementBorderMargin !important;
+		}
+	}
+}
+
+
+#helperInfo {
+	display: flex;
+	justify-content: center;
+	place-items: center;
+	
+	width: 100%;
+	height: $mapButtonHeight;
+	top: $UIElementBorderMargin;
+	position: absolute;
+	
+	font-weight: 700;
+	transition: $defaultTransitionTime ease;
+	
+	cursor: default;
+	
+	div {
+		padding: 0.5em;
+	}
+	
+	&.minimized {
+		top: -2 * $mapButtonHeight;
+	}
+}
+
+.Map-Button-Label {
+	width: 10em;
+	text-align: center;
+	cursor: pointer;
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	overflow: hidden;
+	transition: $defaultTransitionTime ease;
+	
+	&.Map-Getter-Button-Label {
+		border-bottom: 1px #b4b4b4 solid;
+		
+		.icon {
+			margin: ($mapButtonHeight / 2) 0.1em $mapButtonHeight;
+			
+			transition: $defaultTransitionTime ease;
+		}
+	}
+	&.Map-Return-Button-Label {
+		border-top: 1px #b4b4b4 solid;
+		justify-content: flex-end;
+		
+		.icon {
+			margin: $mapButtonHeight 0.1em ($mapButtonHeight / 2);
+			
+			transition: $defaultTransitionTime ease;
+		}
+	}
+	
+	&:hover {
+		background-color: rgba(205, 205, 205, 0.2);
+		
+		.icon {
+			margin: 0.1em;
+		}
+	}
 }

@@ -1,5 +1,5 @@
 import m from "mithril"
-import TerrainRenderer, {TerrainRendererInterface} from "./TerrainRenderer";
+import {TerrainRendererInterface} from "./TerrainRenderer";
 import StaticTerrainRenderer from "./StaticTerrainRenderer";
 import * as mapBox from "mapbox-gl";
 import {MapLayerMouseEvent} from "mapbox-gl";
@@ -13,10 +13,34 @@ export default function App(): m.Component {
         StaticTerrainRenderer.generateTerrainWithLatLng(lat, lng);
     }
 
+    function hideMap() {
+        const map = document.getElementById("mapWrapper") as HTMLElement;
+        map.classList.add("minimized");
+        const helperInfo = document.getElementById("helperInfo") as HTMLElement;
+        helperInfo.classList.add("minimized");
+
+        const getMapButton = document.getElementById("MapGetterButton") as HTMLElement;
+        getMapButton.classList.add("active");
+        const returnMapButton = document.getElementById("MapReturnButton") as HTMLElement;
+        returnMapButton.classList.remove("active");
+    }
+
+    function showMap() {
+        const map = document.getElementById("mapWrapper") as HTMLElement;
+        map.classList.remove("minimized");
+        const helperInfo = document.getElementById("helperInfo") as HTMLElement;
+        helperInfo.classList.remove("minimized");
+
+        const getMapButton = document.getElementById("MapGetterButton") as HTMLElement;
+        getMapButton.classList.remove("active");
+        const returnMapButton = document.getElementById("MapReturnButton") as HTMLElement;
+        returnMapButton.classList.add("active");
+    }
+
     function clickOnMap(mouseEvent: MapLayerMouseEvent) {
         generateTerrainWithLatLng(mouseEvent.lngLat.lat, mouseEvent.lngLat.lng);
-        const map = document.getElementById("mapWrapper") as HTMLElement;
-        map.classList.add("Map-minimized");
+
+        hideMap();
     }
 
     return {
@@ -39,7 +63,6 @@ export default function App(): m.Component {
             StaticTerrainRenderer.init(canvas);
 
 
-
             // TODO Create resize event listener
         },
 
@@ -54,7 +77,18 @@ export default function App(): m.Component {
                     m('.canvas-wrapper', m('canvas#terrain-canvas')),
                     m('.ui', [
                         // Arbitrary coordinates
-                        m('.change-map-button', {onclick: () => generateTerrainWithLatLng(14.565, 48.378)}, 'Change Map')
+                        m('.change-map-button', {onclick: () => generateTerrainWithLatLng(14.565, 48.378)}, 'Change Map'),
+                        m('#MapGetterButton.Map-Button',
+                            m('.Map-Button-Label.Map-Getter-Button-Label.UI-Element', {onclick: () => showMap()}, [
+                                m('.icon', '/\\'),
+                                m('.additional-info', 'change area')
+                            ])),
+                        m('#MapReturnButton.Map-Button.active',
+                            m('.Map-Button-Label.Map-Return-Button-Label.UI-Element', {onclick: () => hideMap()}, [
+                                m('.additional-info', 'return to 3D'),
+                                m('.icon', '\\/')
+                            ])),
+                        m('#helperInfo', m('.UI-Element', 'click anywhere on the map to load this area in 3D'))
                     ])
                 ]);
         }
