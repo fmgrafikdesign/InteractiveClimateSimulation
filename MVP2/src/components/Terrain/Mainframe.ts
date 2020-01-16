@@ -54,14 +54,12 @@ export default function App(): m.Component {
             });
             map.on("click", clickOnMap);
 
-
             container = dom as HTMLElement;
             canvas = container.querySelector('canvas#terrain-canvas') as HTMLCanvasElement;
 
             // renderer = new TerrainRenderer(canvas);
-            //renderer = StaticTerrainRenderer;
+            // renderer = StaticTerrainRenderer;
             StaticTerrainRenderer.init(canvas);
-
 
             // TODO Create resize event listener
         },
@@ -78,19 +76,19 @@ export default function App(): m.Component {
                     m('.ui', [
                         // Arbitrary coordinates
                         m('.change-map-button', {onclick: () => generateTerrainWithLatLng(14.565, 48.378)}, 'Change Map'),
-                        m('#MapGetterButton.Map-Button',
-                            m('.Map-Button-Label.Map-Getter-Button-Label.UI-Element', {onclick: () => showMap()}, [
+                        m('#MapGetterButton.Map-Button.UI-Element-Container',
+                            m('.Map-Button-Label.Map-Getter-Button-Label.clickable', {onclick: () => showMap()}, [
                                 m('.icon', '/\\'),
                                 m('.additional-info', 'change area')
                             ])),
-                        m('#MapReturnButton.Map-Button.active',
-                            m('.Map-Button-Label.Map-Return-Button-Label.UI-Element', {onclick: () => hideMap()}, [
+                        m('#MapReturnButton.Map-Button.UI-Element-Container',
+                            m('.Map-Button-Label.Map-Return-Button-Label.clickable', {onclick: () => hideMap()}, [
                                 m('.additional-info', 'return to 3D'),
                                 m('.icon', '\\/')
                             ])),
-                        m('#helperInfo', m('.UI-Element', 'click anywhere on the map to load this area in 3D'))
+                        m('#helperInfo.UI-Element-Container', m('', 'click anywhere on the map to load this area in 3D'))
                     ])
                 ]);
         }
-    }
+    };
 }
