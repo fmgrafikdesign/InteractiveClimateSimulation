@@ -1,34 +1,25 @@
-import m from 'mithril';
 import {
     AmbientLight,
-    AxesHelper,
+    BoxGeometry,
+    Camera,
     Color,
     DirectionalLight,
-    Light,
     Material,
-    Object3D,
-    PerspectiveCamera,
-    Scene,
-    default as THREE,
-    WebGLRenderer,
+    Mesh,
     MeshBasicMaterial,
     MeshLambertMaterial,
-    VertexColors,
-    BoxGeometry,
-    Mesh,
-    Camera,
+    PerspectiveCamera,
+    PlaneGeometry,
+    Scene,
     Vector3,
-    Geometry,
-    PlaneGeometry
+    VertexColors,
+    WebGLRenderer
 } from "three";
-import {debounce} from "ts-debounce";
-import {OrbitControls} from "three-orbitcontrols-ts";
 import {ITerrainGenerator} from "./Generators/ITerrainGenerator";
 // import {MapTerrainGenerator} from "./Generators/MapTerrainGenerator";
 import {Terrain} from "./TerrainFabian";
-import {RandomTerrainGenerator} from "./Generators/RandomTerrainGenerator";
-import {MapTerrainGenerator} from "./Generators/MapTerrainGenerator";
 import LngLatTerrainGenerator from "./Generators/LngLatTerrainGenerator";
+import {Error} from "tslint/lib/error";
 
 export interface TerrainRendererInterface {
     render(): void;
@@ -46,21 +37,11 @@ export default class TerrainRenderer implements TerrainRendererInterface{
     displayHeight: number;
     terrain: Terrain | undefined;
 
-    updateTerrainGeometry(geometry: PlaneGeometry) {
-        if(!this.terrain) {
-            console.warn("Tried to updateTerrainMesh, but there is no terrain in the renderer.");
-            return;
-        }
-        this.scene.remove(this.terrain.mesh);
-        this.terrain.updateMesh(geometry);
-        this.scene.add(this.terrain.mesh);
-    }
-
     constructor(canvas: HTMLCanvasElement, terrain?: Terrain) {
         this.canvas = canvas;
 
         this.terrain = terrain;
-        if(!this.terrain) {
+        if (!this.terrain) {
             console.warn("No terrain was supplied to the TerrainRenderer, generating one.");
             this.terrain = this.generator.generate();
         }
@@ -78,7 +59,7 @@ export default class TerrainRenderer implements TerrainRendererInterface{
         this.renderer.setSize(this.displayWidth, this.displayHeight);
 
         this.camera = new PerspectiveCamera(150, this.displayWidth / this.displayHeight, 1.0);
-        //this.resetCameraProperties();
+        // this.resetCameraProperties();
 
         this.scene = new Scene();
 
@@ -101,8 +82,8 @@ export default class TerrainRenderer implements TerrainRendererInterface{
 
         this.frameCounter = 0;
 
-        //const controls = new OrbitControls(this.camera, this.canvas);
-        //controls.update();
+        // const controls = new OrbitControls(this.camera, this.canvas);
+        // controls.update();
 
         this.render();
     }
@@ -124,6 +105,16 @@ export default class TerrainRenderer implements TerrainRendererInterface{
         this.renderer.setSize(width, height, false);
     }
 
+    updateTerrainGeometry(geometry: PlaneGeometry) {
+        if (!this.terrain) {
+            console.warn("Tried to updateTerrainMesh, but there is no terrain in the renderer.");
+            return;
+        }
+        this.scene.remove(this.terrain.mesh);
+        this.terrain.updateMesh(geometry);
+        this.scene.add(this.terrain.mesh);
+    }
+
     private addCubeToTestRendering() {
 // Add a cube to test rendering
         const geometry = new BoxGeometry(1, 1, 1);
@@ -138,7 +129,7 @@ export default class TerrainRenderer implements TerrainRendererInterface{
         this.camera.position.set(20000, -20000, 20000);
         // this._camera.position.set(1, 1.5, 1);
         this.camera.lookAt(new Vector3(0, 0, 0));
-        //this.camera.updateProjectionMatrix();
+        // this.camera.updateProjectionMatrix();
     }
 
 }

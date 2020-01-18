@@ -1,6 +1,4 @@
 
-const SimulationController = {
+export default class SimulationController {
 
 };
-
-export default SimulationController;

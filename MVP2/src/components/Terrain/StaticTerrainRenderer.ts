@@ -29,6 +29,7 @@ import {Terrain} from "./TerrainFabian";
 import {RandomTerrainGenerator} from "./Generators/RandomTerrainGenerator";
 import {MapTerrainGenerator} from "./Generators/MapTerrainGenerator";
 import LngLatTerrainGenerator from "./Generators/LngLatTerrainGenerator";
+import ITerrain from "./ITerrain";
 
 export default abstract class StaticTerrainRenderer {
     static generator: ITerrainGenerator = new LngLatTerrainGenerator();
@@ -126,6 +127,7 @@ export default abstract class StaticTerrainRenderer {
 
     static render() {
 
+        this.updateTerrain();
         requestAnimationFrame(this.render.bind(this));
         this.renderer.render(this.scene, this.camera);
         // console.log(this.frameCounter);
@@ -191,4 +193,8 @@ export default abstract class StaticTerrainRenderer {
         }
     }
 
+    private static updateTerrain()
+    {
+        // TODO: update terrain colors
+    }
 }

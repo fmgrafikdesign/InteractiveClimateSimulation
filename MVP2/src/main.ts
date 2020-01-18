@@ -12,10 +12,7 @@ import Mainframe from "./components/Terrain/Mainframe";
 MIDIEventReceiver.initialize();
 
 // Set up routing by connecting components to routes
-m.route(document.body, '/init', {
+m.route(document.body, '/', {
   '/': Mainframe,
-  '/chose-map': ChoseMap,
-  '/generatorConfig': ConfigMenu,
-  '/generatorConfig/:type': ConfigMenu,
-  '/init': InitMenu,
+  '/chose-map': ChoseMap
 });
