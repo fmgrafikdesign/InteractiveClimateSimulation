@@ -5,9 +5,10 @@ import HeightColorModel from "./ColorModels/HeightColorModel";
 import TemperatureColorModel from "./ColorModels/TemperatureColorModel";
 import Simulation from "../Simulation/Simulation";
 import ClimateVertex from "./Baseclasses/ClimateVertex";
+import TemperatureHumidityColorModel from "./ColorModels/TemperatureHumidityColorModel";
 
 // What model to use for coloring the terrain
-const colorModel = new TemperatureColorModel();
+const colorModel = new TemperatureHumidityColorModel();
 
 export class Terrain {
     mesh: Mesh;

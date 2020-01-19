@@ -20,7 +20,7 @@ const MIDIEventReceiver = {
                         Simulation.temperatureChangePerTick = (e.velocity - 0.5);
 
                     } else if(e.note.number == 94) {
-
+                        Simulation.humidityChangePerTick = (e.velocity - 0.5) / 20;
                     } else if (e.note.number == 95) {
 
                     }

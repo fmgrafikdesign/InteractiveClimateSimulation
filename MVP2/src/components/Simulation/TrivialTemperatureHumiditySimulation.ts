@@ -9,10 +9,16 @@ export default class TrivialTemperatureSimulation implements ISimulation {
     setup(): void {
         this.computeMinMaxHeight();
         this.initalizeVertexTemperatureBasedOnHeight();
+        this.initalizeVertexHumidityBasedOnHeight();
     }
 
     tick(): void {
-        this.changeTemperatur();
+        Simulation.terrain.vertices.forEach((vertex) => {
+            const relativeVertexHeight = Helpers.map(vertex.y, this.minHeight, this.maxHeight, 1, 0);
+            vertex.temperature += Simulation.temperatureChangePerTick * relativeVertexHeight;
+
+            vertex.humidity = Math.min(Math.max((vertex.humidity + Simulation.humidityChangePerTick), 0), 1);
+        });
     }
 
     private computeMinMaxHeight() {
@@ -37,13 +43,9 @@ export default class TrivialTemperatureSimulation implements ISimulation {
         });
     }
 
-    // Trivial temperature change. Considers terrain height.
-    public changeTemperatur() {
+    private initalizeVertexHumidityBasedOnHeight() {
         Simulation.terrain.vertices.forEach((vertex) => {
-
-            const relativeVertexHeight = Helpers.map(vertex.y, this.minHeight, this.maxHeight, 1, 0);
-            vertex.temperature += Simulation.temperatureChangePerTick * relativeVertexHeight;
+            vertex.humidity = Helpers.map(vertex.y, this.minHeight, this.maxHeight, 1, 0);
         });
     }
-
 }

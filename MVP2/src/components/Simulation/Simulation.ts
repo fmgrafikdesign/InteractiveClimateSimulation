@@ -4,9 +4,10 @@ import Terrain from "../Terrain/TerrainFabian";
 import ClimateVertex from "../Terrain/Baseclasses/ClimateVertex";
 import SimulationContext from "./SimulationContext";
 import TrivialTemperatureSimulation from "./TrivialTemperatureSimulation";
+import TrivialTemperatureHumiditySimulation from "./TrivialTemperatureHumiditySimulation";
 
 // The strategy pattern is used to allow quick switching between strategies.
-const strategy = new TrivialTemperatureSimulation();
+const strategy = new TrivialTemperatureHumiditySimulation();
 
 /**
  * Things that would be great to simulate in a true climate simulation:
@@ -47,6 +48,7 @@ export default class Simulation {
      */
     static sunEnergyInput: number;
     static temperatureChangePerTick: number = .2;
+    static humidityChangePerTick: number = .01;
 
     /**
      * The average air movement coming from outside the world boundaries
