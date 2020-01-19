@@ -121,9 +121,6 @@
   justify-content: center;
   place-items: center;
   width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
   height: 2.5em;
   top: 1em;
   font-weight: 700;
@@ -135,6 +132,14 @@
 }
 #helperInfo.minimized {
   top: -5em;
+}
+
+#map {
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
 }
 
 .Map-Button-Label {
@@ -169,14 +174,23 @@
   margin: 0.1em;
 }
 
-.change-map-button {
+#debug-info {
   position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 10;
+  bottom: 10px;
+  left: 10px;
   background-color: #ffffff;
-  padding: 0.5rem 0.75rem;
-  border-radius: 3px;
+}
+
+.debug-info-wrapper {
+  padding: 1rem;
+  color: #000;
+  position: relative;
+  z-index: 10;
+}
+
+.debug-info-wrapper span {
+  display: block;
+  font-weight: 600;
 }
 
 body, td, th {

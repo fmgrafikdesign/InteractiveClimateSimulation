@@ -1,10 +1,10 @@
 import {ITerrainGenerator} from "./ITerrainGenerator";
 import Terrain from "../TerrainFabian";
 import * as THREE from "three";
-import {PlaneGeometry, Vector3} from "three";
-import SimplexNoise from "simplex-noise";
+import {Vector3} from "three";
 import StaticTerrainRenderer from "../StaticTerrainRenderer";
 
+// tslint:disable-next-line:max-line-length
 const mapboxAccessToken = "pk.eyJ1IjoiZm1ncmFmaWtkZXNpZ24iLCJhIjoiY2s0YWFmY3B1MDF4bzNsbmkybWhheHhnOCJ9.FcQSDwWQH11Du2f3joMrKA";
 
 export default class LngLatTerrainGenerator implements ITerrainGenerator {
@@ -139,9 +139,4 @@ export default class LngLatTerrainGenerator implements ITerrainGenerator {
             }
         });
     }
-}
-
-function map(val: number, smin: number, smax: number, emin: number, emax: number) {
-    const t =  (val - smin) / (smax - smin);
-    return (emax - emin) * t + emin;
 }

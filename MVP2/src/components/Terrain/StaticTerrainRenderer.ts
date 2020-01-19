@@ -30,8 +30,9 @@ import {RandomTerrainGenerator} from "./Generators/RandomTerrainGenerator";
 import {MapTerrainGenerator} from "./Generators/MapTerrainGenerator";
 import LngLatTerrainGenerator from "./Generators/LngLatTerrainGenerator";
 import ITerrain from "./ITerrain";
+import Simulation from "../Simulation/Simulation";
 
-export default abstract class StaticTerrainRenderer {
+export default class StaticTerrainRenderer {
     static generator: ITerrainGenerator = new LngLatTerrainGenerator();
     static renderer: WebGLRenderer;
     static canvas: HTMLCanvasElement;
@@ -128,6 +129,7 @@ export default abstract class StaticTerrainRenderer {
         this.renderer.render(this.scene, this.camera);
         // console.log(this.frameCounter);
         this.frameCounter++;
+        m.redraw();
     }
 
     static watchForResize(distance: number) {
@@ -181,6 +183,8 @@ export default abstract class StaticTerrainRenderer {
                 this.terrain.geometry.rotateZ(Math.PI / 8);
             } else if (e.code == "KeyE") {
                 this.terrain.geometry.rotateZ(-Math.PI / 8);
+            } else if (e.code == "KeyP") {
+                Simulation.pause();
             }
 
             console.log(this.terrain.geometry);

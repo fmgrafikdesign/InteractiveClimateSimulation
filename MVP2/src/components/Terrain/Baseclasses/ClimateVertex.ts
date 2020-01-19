@@ -1,18 +1,14 @@
 import {Color, Vector3} from "three";
 
-export default class ClimateVertex {
-    private _position: Vector3;
-    private _airFlow: Vector3;
-    private _humidity: number;
-    private _energy: number;
+export default class ClimateVertex extends Vector3 {
 
-    constructor(position?: Vector3) {
-        if (!position)
-        {
-            position = new Vector3();
-        }
+    private _airFlow: Vector3 = new Vector3();
+    private _humidity: number = 0;
+    private _energy: number = 0;
+    private _temperature: number = 0;
 
-        this._position = position;
+    constructor(x?: number, y?: number, z?: number) {
+        super(x, y, z);
         this._humidity = 0;
         this._energy = 0;
         this._airFlow = new Vector3();
@@ -22,14 +18,6 @@ export default class ClimateVertex {
 
         // TODO: add calculation to return a color based on the height, humidity and current energy of the vertex
         return new Color(1, 1, 1);
-    }
-
-    get position(): Vector3 {
-        return this._position;
-    }
-
-    set position(value: Vector3) {
-        this._position = value;
     }
 
     get humidity(): number {
@@ -54,5 +42,13 @@ export default class ClimateVertex {
 
     set airFlow(value: Vector3) {
         this._airFlow = value;
+    }
+
+    get temperature(): number {
+        return this._temperature;
+    }
+
+    set temperature(value: number) {
+        this._temperature = value;
     }
 }

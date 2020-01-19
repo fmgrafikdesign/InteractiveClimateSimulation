@@ -1,7 +1,6 @@
 import webmidi from 'webmidi';
-import SimulationController from "../Simulation/SimulationController";
-import StaticTerrainRenderer from "../Terrain/StaticTerrainRenderer";
-import TerrainController from "../Terrain/TerrainController";
+import Simulation from "../Simulation/Simulation";
+import m from "mithril";
 
 const MIDIEventReceiver = {
     initialize: () => {
@@ -17,18 +16,17 @@ const MIDIEventReceiver = {
                     // console.log(e);
                     // Last three white notes on the piano on the right side
                     if(e.note.number == 93) {
-                        // Control position
-                        const threshold = 65 + e.velocity * 40;
-                        StaticTerrainRenderer.terrain.setWaterThreshold(threshold);
-                        //console.log("set Water Threshold to ", threshold);
+                        // Control Sun Energy Input
+                        Simulation.temperatureChangePerTick = (e.velocity - 0.5);
 
                     } else if(e.note.number == 94) {
 
                     } else if (e.note.number == 95) {
 
                     }
+                    m.redraw();
 
-                })
+                });
             }
         });
     }

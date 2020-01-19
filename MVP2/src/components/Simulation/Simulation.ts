@@ -1,62 +1,126 @@
 import {Vector3} from "three";
 import ITerrain from "../Terrain/ITerrain";
+import Terrain from "../Terrain/TerrainFabian";
+import ClimateVertex from "../Terrain/Baseclasses/ClimateVertex";
+import SimulationContext from "./SimulationContext";
+import TrivialTemperatureSimulation from "./TrivialTemperatureSimulation";
+
+// The strategy pattern is used to allow quick switching between strategies.
+const strategy = new TrivialTemperatureSimulation();
+
+/**
+ * Things that would be great to simulate in a true climate simulation:
+ * - Insolation and radiation
+ * - Temperature
+ * - Lateral convection
+ * - Density and vertical convection
+ *
+ * Optional:
+ * - Coriolis effect
+ * - Lateral diffusion
+ * - Precipitation
+ * - Groundwater, surface water, erosion
+ */
+
+/**
+ * Things we could settle for for now in our /weather/ simulation
+ * - Rain
+ * - Temperature
+ * - Wind
+ */
 
 export default class Simulation {
 
+    static context = new SimulationContext();
+
+    static paused: boolean = false;
+    static milliSecondsPerTick: number = 200;
+    static currentTick: number = 0;
+    static currentTickFinished: boolean = true;
+    static lastTickTime: number = 0;
+    static averageTickTime: number = 0;
+    static totalTickTime: number = 0;
+
+    static intervalHandler: number;
     /**
      * The unhindered average energy input from the sun (without clouds, light shattering etc.)
      */
-    private sunEnergyInput: number;
+    static sunEnergyInput: number;
+    static temperatureChangePerTick: number = .2;
 
     /**
      * The average air movement coming from outside the world boundaries
      */
-    private outerAirFlow: Vector3;
+    static outerAirFlow: Vector3;
 
     /**
-     * The chance of rain to fall on a simulated day from 0 - 1
+     * The amount of rain
      */
-    private rainfallProbability: number;
+    static rainfallProbability: number;
 
     /**
      * Instance of the terrain (or shall we keep an instance of the terrain controller?) to be able to quickly access all needed properties
      */
-    private terrain: ITerrain;
+    static terrain: Terrain;
 
-
-    constructor() {
-        this.sunEnergyInput = 10;
+    static init(terrain: Terrain, milliSecondsPerTick?: number) {
+        if (milliSecondsPerTick) {
+            this.milliSecondsPerTick = milliSecondsPerTick;
+        }
+        this.terrain = terrain;
+        this.sunEnergyInput = 1;
         this.outerAirFlow = new Vector3(1, 1, 0);
         this.rainfallProbability = 0.5;
+
+        this.context.setStrategy(strategy);
+        this.context.setupStrategy();
     }
 
+    // Resets the simulation
+    static reset() {
 
-    public update(deltaTime: number)
-    {
-        this.createAirFlow();
-        this.rain();
-        this.addSunEnergy();
-
-        this.calculateEnergyLevels();
     }
 
-    private rain()
-    {
-        // TODO: decide, if it rains (if yes, add some humidity to every vertex)
+    static start() {
+        clearInterval(this.intervalHandler);
+        this.intervalHandler = setInterval(Simulation.update, this.milliSecondsPerTick);
+        console.log("Started the simulation with ", this.milliSecondsPerTick, "ms per tick");
     }
 
-    private addSunEnergy()
-    {
-        // TODO: add the energy of the sun to every vertex of the terrain (maybe consider clouds to reduce the energy, that reaches the ground)
+    static pause() {
+        this.paused = !this.paused;
+        console.log(this.paused);
     }
 
-    private createAirFlow()
-    {
-        // TODO: calculate the average air flow of each vertex (e.g. with the general air flow and height differences to neighbour vertices and sun input) and write it into the vertex
+    static update() {
+        Simulation.tick();
+        if (Simulation.paused || !this.currentTickFinished) {
+            return;
+        }
     }
 
-    private calculateEnergyLevels()
-    {
-        // TODO: calculate the current energy level for each vertex (with the sun input, air flow, ...) and write it into the vertex
+    static tick() {
+        const startTime = this.startCollectingTickInfo();
+
+        this.context.executeStrategy();
+
+        this.currentTickFinished = true;
+
+        this.terrain.updateMeshColors();
+
+        this.currentTick++;
+        this.finishCollectingTickInfo(startTime);
     }
-};
+
+    private static finishCollectingTickInfo(startTime: number) {
+        this.lastTickTime = Date.now() - startTime;
+        this.totalTickTime += this.lastTickTime;
+        this.averageTickTime = this.totalTickTime / this.currentTick;
+    }
+
+    private static startCollectingTickInfo() {
+        const startTime = Date.now();
+        this.currentTickFinished = false;
+        return startTime;
+    }
+}

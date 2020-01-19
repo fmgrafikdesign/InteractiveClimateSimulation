@@ -3,6 +3,8 @@ import {TerrainRendererInterface} from "./TerrainRenderer";
 import StaticTerrainRenderer from "./StaticTerrainRenderer";
 import * as mapBox from "mapbox-gl";
 import {MapLayerMouseEvent} from "mapbox-gl";
+import Simulation from "../Simulation/Simulation";
+import DebugInfo from "../DebugInfo";
 
 const MAP = 0;
 const TERRAIN = 1;
@@ -15,6 +17,8 @@ export default function App(): m.Component {
 
     function generateTerrainWithLatLng(lat: number, lng: number) {
         StaticTerrainRenderer.generateTerrainWithLatLng(lat, lng);
+        Simulation.init(StaticTerrainRenderer.terrain);
+        Simulation.start();
     }
 
     function hideMap() {
@@ -58,6 +62,7 @@ export default function App(): m.Component {
             });
             map.on("click", clickOnMap);
 
+            /*
             function clickOnMap(mouseEvent: MapLayerMouseEvent) {
                 generateTerrainWithLatLng(mouseEvent.lngLat.lat, mouseEvent.lngLat.lng);
                 state = TERRAIN;
@@ -66,7 +71,7 @@ export default function App(): m.Component {
                 const mapDOMelement = document.getElementById("mapWrapper") as HTMLElement;
                 //mapDOMelement.classList.add("Map-minimized");
             }
-
+*/
             container = dom as HTMLElement;
             canvas = container.querySelector('canvas#terrain-canvas') as HTMLCanvasElement;
 
@@ -83,8 +88,6 @@ export default function App(): m.Component {
                     m('#mapWrapper', m('div#map')),
                     m('.canvas-wrapper', m('canvas#terrain-canvas')),
                     m('.ui', [
-                        // Arbitrary coordinates
-                        m('.change-map-button', {onclick: () => generateTerrainWithLatLng(14.565, 48.378)}, 'Change Map'),
                         m('#MapGetterButton.Map-Button.UI-Element-Container',
                             m('.Map-Button-Label.Map-Getter-Button-Label.clickable', {onclick: () => showMap()}, [
                                 m('.icon', '/\\'),
@@ -95,7 +98,8 @@ export default function App(): m.Component {
                                 m('.additional-info', 'return to 3D'),
                                 m('.icon', '\\/')
                             ])),
-                        m('#helperInfo.UI-Element-Container', m('', 'click anywhere on the map to load this area in 3D'))
+                        m('#helperInfo.UI-Element-Container', m('', 'click anywhere on the map to load this area in 3D')),
+                        m('#debug-info', m(DebugInfo))
                     ])
                 ]);
         }
