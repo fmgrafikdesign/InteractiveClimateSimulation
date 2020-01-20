@@ -83,9 +83,10 @@
 
 .UI-Element-Container {
   position: absolute;
+  z-index: 10;
 }
 .UI-Element-Container div {
-  backdrop-filter: blur(3px) brightness(85%);
+  backdrop-filter: blur(3px) brightness(115%);
   transition: 0.3s ease;
 }
 .UI-Element-Container .clickable {
@@ -172,6 +173,33 @@
 }
 .Map-Button-Label:hover .icon {
   margin: 0.1em;
+}
+
+.colorModelButton {
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 100px;
+  height: 100px;
+  margin: 1em;
+  text-align: center;
+  justify-content: center;
+}
+
+#colorModelContainer {
+  padding: 1rem;
+  color: #000;
+  position: fixed;
+  right: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+}
+#colorModelContainer .colorModelButton {
+  display: block;
+  font-weight: 600;
+}
+#colorModelContainer.active {
+  right: -5em;
 }
 
 #debug-info {

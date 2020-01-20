@@ -13,7 +13,7 @@ export default class SimpleClimateSimulation implements ISimulation {
     }
 
     public addSunEnergy() {
-        Simulation.terrain.vertices.forEach((vertex) => {
+        Simulation.terrain.getVertices().forEach((vertex) => {
             vertex.temperature += Simulation.temperatureChangePerTick;
         });
     }

@@ -20,6 +20,7 @@ import {ITerrainGenerator} from "./Generators/ITerrainGenerator";
 import {Terrain} from "./TerrainFabian";
 import LngLatTerrainGenerator from "./Generators/LngLatTerrainGenerator";
 import {Error} from "tslint/lib/error";
+import ITerrain from "./ITerrain";
 
 export interface TerrainRendererInterface {
     render(): void;
@@ -35,7 +36,7 @@ export default class TerrainRenderer implements TerrainRendererInterface{
     material: Material;
     displayWidth: number;
     displayHeight: number;
-    terrain: Terrain | undefined;
+    terrain: ITerrain | undefined;
 
     constructor(canvas: HTMLCanvasElement, terrain?: Terrain) {
         this.canvas = canvas;
@@ -76,7 +77,7 @@ export default class TerrainRenderer implements TerrainRendererInterface{
         // this.scene.add(controls as unknown as Object3D);
         this.scene.add(ambientLight);
         this.scene.add(directionalLight);
-        this.scene.add(this.terrain.mesh);
+        this.scene.add(this.terrain.getMesh());
 
         // this.addCubeToTestRendering();
 
@@ -110,9 +111,9 @@ export default class TerrainRenderer implements TerrainRendererInterface{
             console.warn("Tried to updateTerrainMesh, but there is no terrain in the renderer.");
             return;
         }
-        this.scene.remove(this.terrain.mesh);
+        this.scene.remove(this.terrain.getMesh());
         this.terrain.updateMesh(geometry);
-        this.scene.add(this.terrain.mesh);
+        this.scene.add(this.terrain.getMesh());
     }
 
     private addCubeToTestRendering() {

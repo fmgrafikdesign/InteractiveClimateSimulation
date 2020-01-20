@@ -63,9 +63,9 @@ export default class Simulation {
     /**
      * Instance of the terrain (or shall we keep an instance of the terrain controller?) to be able to quickly access all needed properties
      */
-    static terrain: Terrain;
+    static terrain: ITerrain;
 
-    static init(terrain: Terrain, milliSecondsPerTick?: number) {
+    static init(terrain: ITerrain, milliSecondsPerTick?: number) {
         if (milliSecondsPerTick) {
             this.milliSecondsPerTick = milliSecondsPerTick;
         }
@@ -84,6 +84,7 @@ export default class Simulation {
     }
 
     static start() {
+        this.paused = false;
         clearInterval(this.intervalHandler);
         this.intervalHandler = setInterval(Simulation.update, this.milliSecondsPerTick);
         console.log("Started the simulation with ", this.milliSecondsPerTick, "ms per tick");
@@ -95,10 +96,12 @@ export default class Simulation {
     }
 
     static update() {
-        Simulation.tick();
-        if (Simulation.paused || !this.currentTickFinished) {
+        if (Simulation.paused || !Simulation.currentTickFinished) {
+            console.log(Simulation.paused);
+            console.log(Simulation.currentTickFinished);
             return;
         }
+        Simulation.tick();
     }
 
     static tick() {
@@ -106,12 +109,12 @@ export default class Simulation {
 
         this.context.executeStrategy();
 
-        this.currentTickFinished = true;
 
-        this.terrain.updateMeshColors();
+        this.terrain.updateMeshColors(this.context.getColorModel());
 
         this.currentTick++;
         this.finishCollectingTickInfo(startTime);
+        this.currentTickFinished = true;
     }
 
     private static finishCollectingTickInfo(startTime: number) {

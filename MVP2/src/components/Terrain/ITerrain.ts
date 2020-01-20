@@ -1,5 +1,6 @@
 import ClimateVertex from "./Baseclasses/ClimateVertex";
-import {PlaneGeometry} from "three";
+import {Mesh, PlaneGeometry} from "three";
+import {ITerrainColorModel} from "./ColorModels/ITerrainColorModel";
 
 
 export default interface ITerrain {
@@ -12,5 +13,9 @@ export default interface ITerrain {
 
     updateMesh(geometry: PlaneGeometry): void;
 
-    updateMeshColors(): void;
+    updateMeshColors(colorModel: ITerrainColorModel): void;
+
+    getVertices(): ClimateVertex[];
+
+    getMesh(): Mesh;
 }
