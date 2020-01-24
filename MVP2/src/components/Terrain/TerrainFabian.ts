@@ -77,7 +77,7 @@ export class Terrain implements ITerrain {
     }
 
     public getVertex(indexX: number, indexY: number): ClimateVertex {
-        return this.vertices[this.getVertexPositionInArray(indexX, indexY)];
+        return (this.isInBounds(indexX, indexY)) ? this.vertices[this.getVertexPositionInArray(indexX, indexY)] : new ClimateVertex();
     }
 
     private getVertexPositionInArray(x: number, y: number): number {
@@ -100,6 +100,10 @@ export class Terrain implements ITerrain {
 
         let size: Vector3 = new Vector3();
         return (this.mesh.geometry as Geometry).boundingBox.getSize(size).y;
+    }
+
+    private isInBounds(indexX: number, indexY: number): boolean {
+        return indexX >= 0 && indexX < this.verticesX && indexY >= 0 && indexY < this.verticesY;
     }
 }
 

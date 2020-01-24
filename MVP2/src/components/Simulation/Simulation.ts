@@ -5,9 +5,10 @@ import ClimateVertex from "../Terrain/Baseclasses/ClimateVertex";
 import SimulationContext from "./SimulationContext";
 import TrivialTemperatureSimulation from "./TrivialTemperatureSimulation";
 import TrivialTemperatureHumiditySimulation from "./TrivialTemperatureHumiditySimulation";
+import TrivialWaterSimulation from "./TrivialWaterSimulation";
 
 // The strategy pattern is used to allow quick switching between strategies.
-const strategy = new TrivialTemperatureHumiditySimulation();
+const strategy = new TrivialWaterSimulation();
 
 /**
  * Things that would be great to simulate in a true climate simulation:
@@ -97,8 +98,6 @@ export default class Simulation {
 
     static update() {
         if (Simulation.paused || !Simulation.currentTickFinished) {
-            console.log(Simulation.paused);
-            console.log(Simulation.currentTickFinished);
             return;
         }
         Simulation.tick();
@@ -114,7 +113,7 @@ export default class Simulation {
 
         this.currentTick++;
         this.finishCollectingTickInfo(startTime);
-        this.currentTickFinished = true;
+        Simulation.currentTickFinished = true;
     }
 
     private static finishCollectingTickInfo(startTime: number) {
@@ -125,7 +124,7 @@ export default class Simulation {
 
     private static startCollectingTickInfo() {
         const startTime = Date.now();
-        this.currentTickFinished = false;
+        Simulation.currentTickFinished = false;
         return startTime;
     }
 }

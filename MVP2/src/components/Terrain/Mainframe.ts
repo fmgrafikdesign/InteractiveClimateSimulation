@@ -230,7 +230,7 @@ export default function App(): m.Component {
             },
             'paint': {
                 'fill-color': '#1d881c',
-                'fill-opacity': 0.3,
+                'fill-opacity': 0.15,
             }
         });
     }

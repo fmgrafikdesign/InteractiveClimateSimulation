@@ -16,6 +16,7 @@ export class Terrain implements ITerrain {
         this.nrOfVerticesY = nrOfVerticesY;
 
         this.geometry = geometry;
+        this.vertices = [];
 
         // dummy material -> gets overridden in TerrainViewMatthias.tsiew.ts
         const material: Material = new MeshPhongMaterial({color: new Color(1, 1, 1)});

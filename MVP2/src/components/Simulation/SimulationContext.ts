@@ -1,6 +1,7 @@
 import ISimulation from "./ISimulation";
 import {ITerrainColorModel} from "../Terrain/ColorModels/ITerrainColorModel";
 import TemperatureHumidityColorModel from "../Terrain/ColorModels/TemperatureHumidityColorModel";
+import HumidityColorModel from "../Terrain/ColorModels/HumidityColorModel";
 
 export default class SimulationContext {
     private strategy: ISimulation | undefined;
@@ -27,6 +28,6 @@ export default class SimulationContext {
     }
 
     getColorModel(): ITerrainColorModel {
-        return (this.colorModel) ? this.colorModel : new TemperatureHumidityColorModel();
+        return (this.colorModel) ? this.colorModel : new HumidityColorModel();
     }
 }

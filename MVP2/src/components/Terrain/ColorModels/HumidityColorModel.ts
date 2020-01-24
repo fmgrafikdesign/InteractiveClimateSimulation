@@ -1,8 +1,11 @@
 import {ITerrainColorModel} from "./ITerrainColorModel";
 import Terrain from "../TerrainFabian";
 import ClimateVertex from "../Baseclasses/ClimateVertex";
+import Helpers from "../../Helpers";
 
 export default class TemperatureHumidityColorModel implements ITerrainColorModel {
+    private nrOfQuantizeSteps: number = 10;
+
     updateMeshColors(terrain: Terrain): void {
         terrain.geometry.faces.forEach((face) => {
             const a = terrain.geometry.vertices[face.a] as ClimateVertex;
@@ -14,6 +17,8 @@ export default class TemperatureHumidityColorModel implements ITerrainColorModel
             let r = .9 - (humidity * .9);
             let g = .9 - (humidity * .9);
             let b2 = .9 * humidity;
+
+            r = Helpers.quantize(r, 0, 1, this.nrOfQuantizeSteps);
 
             const color = {r, g, b: b2};
 
