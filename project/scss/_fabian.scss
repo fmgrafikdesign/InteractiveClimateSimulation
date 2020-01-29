@@ -1,0 +1,20 @@
+#debug-info {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  background-color: #ffffff;
+}
+
+.debug-info-wrapper {
+  padding: 1rem;
+  color: #000;
+  position: relative;
+  z-index: 10;
+}
+
+.debug-info-wrapper {
+  span {
+    display: block;
+    font-weight: 600;
+  }
+}
