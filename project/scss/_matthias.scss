@@ -35,7 +35,7 @@ $defaultTransitionTime: 0.3s;
 
 	&.minimized {
 		height: 0 !important;
-		transition-delay: 1s !important;
+		/*transition-delay: 1s !important;*/
 	}
 }
 
@@ -67,7 +67,7 @@ $defaultTransitionTime: 0.3s;
 	transition-delay: 0s;
 
 	&.active {
-		transition-delay: 1s;
+		/*transition-delay: 1s;*/
 	}
 
 	&#MapGetterButton {

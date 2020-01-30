@@ -174,6 +174,7 @@ export default class StaticTerrainRenderer {
 
     private static updateTerrain()
     {
+        this.terrain.updateMeshColors(Simulation.context.getColorModel());
         // TODO: update terrain colors
     }
 }

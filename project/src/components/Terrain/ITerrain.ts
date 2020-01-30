@@ -5,11 +5,7 @@ import {ITerrainColorModel} from "./ColorModels/ITerrainColorModel";
 
 export default interface ITerrain {
 
-    getVertex(indexX: number, indexY: number): ClimateVertex;
-
-    getWidth(): number;
-
-    getHeight(): number;
+    getVertex(indexX: number, indexY: number): ClimateVertex | null;
 
     updateMesh(geometry: PlaneGeometry): void;
 

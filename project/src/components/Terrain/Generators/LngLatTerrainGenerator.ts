@@ -1,5 +1,6 @@
 import {ITerrainGenerator} from "./ITerrainGenerator";
-import Terrain from "../TerrainFabian";
+//import Terrain from "../TerrainFabian";
+import Terrain from "../TerrainMatthias";
 import * as THREE from "three";
 import {Vector3} from "three";
 import StaticTerrainRenderer from "../StaticTerrainRenderer";
@@ -32,7 +33,6 @@ export default class LngLatTerrainGenerator implements ITerrainGenerator {
 
         let geometry = new THREE.PlaneGeometry(width, height, verticesX - 1, verticesY - 1);
         geometry.rotateX(-Math.PI / 2);
-        let terrain = new Terrain(geometry);
 
         // Update the Terrain geometry as we finish processing the image.
         this.getTileDataAt(MapboxMathUtils.getTileIndices(this.centerLongitude, this.centerLatitude, this.zoomLevel))
@@ -41,7 +41,8 @@ export default class LngLatTerrainGenerator implements ITerrainGenerator {
 //                geometry.rotateX(-Math.PI / 2);
                 StaticTerrainRenderer.updateTerrainGeometry(geometry);
             });
-        return new Terrain(geometry, verticesX, verticesY, width, height);
+        //return new Terrain(geometry, verticesX, verticesY, width, height);
+        return new Terrain(geometry, verticesX, verticesY);
     }
 
     generateTexture(width: number, height: number) {

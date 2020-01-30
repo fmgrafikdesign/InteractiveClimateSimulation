@@ -2,7 +2,7 @@
 
 import m from 'mithril';
 import MIDIEventReceiver from "./components/MIDI/MIDIEventReceiver";
-import Mainframe from "./components/Terrain/Mainframe";
+import Mainframe from "./components/Mainframe";
 
 MIDIEventReceiver.initialize();
 

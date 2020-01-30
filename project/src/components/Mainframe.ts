@@ -1,17 +1,17 @@
 import m from "mithril"
-import {ITerrainRenderer} from "./ITerrainRenderer";
-import StaticTerrainRenderer from "./StaticTerrainRenderer";
+import {ITerrainRenderer} from "./Terrain/ITerrainRenderer";
+import StaticTerrainRenderer from "./Terrain/StaticTerrainRenderer";
 import * as mapBox from "mapbox-gl";
 import {LngLat, MapLayerMouseEvent, Marker} from "mapbox-gl";
-import Simulation from "../Simulation/Simulation";
-import DebugInfo from "../DebugInfo";
+import Simulation from "./Simulation/Simulation";
+import DebugInfo from "./DebugInfo";
 import {Vector3} from "three";
-import MapboxMathUtils from "./Generators/MapboxMathUtils";
-import HumidityColorModel from "./ColorModels/HumidityColorModel";
-import {ITerrainColorModel} from "./ColorModels/ITerrainColorModel";
-import TemperatureHumidityColorModel from "./ColorModels/TemperatureHumidityColorModel";
-import HeightColorModel from "./ColorModels/HeightColorModel";
-import TemperatureColorModel from "./ColorModels/TemperatureColorModel";
+import MapboxMathUtils from "./Terrain/Generators/MapboxMathUtils";
+import HumidityColorModel from "./Terrain/ColorModels/HumidityColorModel";
+import {ITerrainColorModel} from "./Terrain/ColorModels/ITerrainColorModel";
+import TemperatureHumidityColorModel from "./Terrain/ColorModels/TemperatureHumidityColorModel";
+import HeightColorModel from "./Terrain/ColorModels/HeightColorModel";
+import TemperatureColorModel from "./Terrain/ColorModels/TemperatureColorModel";
 
 const MAP = 0;
 const TERRAIN = 1;
@@ -34,6 +34,7 @@ export default function App(): m.Component {
     function generateTerrainWithLatLng(lat: number, lng: number) {
         StaticTerrainRenderer.generateTerrainWithLatLng(lat, lng);
         Simulation.init(StaticTerrainRenderer.terrain);
+        Simulation.context.setColorModel(new HumidityColorModel());
         Simulation.start();
     }
 

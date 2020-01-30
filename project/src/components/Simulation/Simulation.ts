@@ -105,7 +105,7 @@ export default class Simulation {
         this.context.executeStrategy();
 
 
-        this.terrain.updateMeshColors(this.context.getColorModel());
+        //this.terrain.updateMeshColors(this.context.getColorModel());
 
         this.currentTick++;
         this.finishCollectingTickInfo(startTime);

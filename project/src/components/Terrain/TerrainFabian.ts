@@ -1,11 +1,11 @@
 import * as THREE from "three";
-import {Geometry, Mesh, PlaneGeometry, Vector3} from "three";
+import {Geometry, Mesh, PlaneGeometry} from "three";
 import {ITerrainColorModel} from "./ColorModels/ITerrainColorModel";
 import Simulation from "../Simulation/Simulation";
 import ClimateVertex from "./Baseclasses/ClimateVertex";
 import ITerrain from "./ITerrain";
 
-export class Terrain implements ITerrain {
+export default class Terrain implements ITerrain {
     mesh: Mesh;
     geometry: Geometry;
     vertices: ClimateVertex[];
@@ -85,23 +85,7 @@ export class Terrain implements ITerrain {
         return this.vertices;
     }
 
-    getWidth(): number {
-        this.mesh.geometry.computeBoundingBox();
-
-        let size: Vector3 = new Vector3();
-        return (this.mesh.geometry as Geometry).boundingBox.getSize(size).x;
-    }
-
-    getHeight(): number {
-        this.mesh.geometry.computeBoundingBox();
-
-        let size: Vector3 = new Vector3();
-        return (this.mesh.geometry as Geometry).boundingBox.getSize(size).y;
-    }
-
     private isInBounds(indexX: number, indexY: number): boolean {
         return indexX >= 0 && indexX < this.verticesX && indexY >= 0 && indexY < this.verticesY;
     }
 }
-
-export default Terrain;

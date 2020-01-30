@@ -1,5 +1,5 @@
-import Terrain from "../TerrainFabian";
+import ITerrain from "../ITerrain";
 
 export interface ITerrainColorModel {
-    updateMeshColors(terrain: Terrain): void;
+    updateMeshColors(terrain: ITerrain): void;
 }

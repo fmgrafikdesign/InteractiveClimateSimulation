@@ -19,8 +19,8 @@ export default class TrivialWaterSimulation implements ISimulation {
 
     private initializeVertexHumidity() {
         Simulation.terrain.getVertices().forEach((vertex) => {
-            //vertex.temperature = Helpers.map(vertex.y, this.minHumidity, this.maxHumidity, 20, -20);
-            vertex.humidity = 1;
+            vertex.humidity = 0.5;
+            vertex.temperature = 10;
         });
     }
 
@@ -32,22 +32,36 @@ export default class TrivialWaterSimulation implements ISimulation {
             raining = true;
         }
 
-        Simulation.terrain.getVertices().forEach((vertex) => {
+        Simulation.terrain.getVertices().forEach((vertex, index) => {
 
             if (vertex.humidity > 0.001) {
                 const lowestNeighbour = this.getLowestNeighborVertex(vertex);
 
-                if (lowestNeighbour != vertex) {
-                    // transfer humidity to the lowest neighbour vertex based on the height difference between the vertices, but maximal 85% of the current vertices humidity
-                    const humidityExchange = Math.max(0, Math.min(vertex.humidity * 0.5, (vertex.humidity * 0.0005 * (vertex.y - lowestNeighbour.y))));
+                // only transfer humidity to the lowest neighbour, if it is not the vertex itself and the temperature is above 0° (we assume then there is snow) or the height difference is high enough, that the snow "slides down"
+                if (lowestNeighbour != vertex && (vertex.temperature > 0 || vertex.y - lowestNeighbour.y > 5)) {
+                    // transfer humidity to the lowest neighbour vertex based on the height difference between the vertices, but maximal 95% of the current vertices humidity
+                    let humidityExchange = Math.max(0, Math.min(vertex.humidity * 0.95, (vertex.humidity * 0.95 * (vertex.y - lowestNeighbour.y))));
+
                     lowestNeighbour.humidity += humidityExchange;
                     vertex.humidity -= humidityExchange;
                 }
             }
 
+            /**
+             * Section for when it is raining
+             * Water is added  with a slight random offset (0.05 - 0.15) per vertex
+             */
             if (raining) {
-                vertex.humidity += 0.1;
+                const humidityAddition = 0.15 + Math.random() * 0.1 - 0.05;
+
+                vertex.humidity += humidityAddition;
             }
+
+            /**
+             * Remove water, that is going into the ground (versickern)
+             * In this very simple case, 3% of the current humidity level are vanished
+             */
+            vertex.humidity *= 0.97;
         });
     }
 
@@ -55,12 +69,12 @@ export default class TrivialWaterSimulation implements ISimulation {
         let lowestVertex: ClimateVertex = vertex;
         const terrain: ITerrain = Simulation.terrain;
 
-        for (let y = vertex.indexY - 1; y < vertex.indexY + 1; y++) {
-            for (let x = vertex.indexX - 1; x < vertex.indexX + 1; x++) {
+        for (let y = vertex.indexY - 1; y <= vertex.indexY + 1; y++) {
+            for (let x = vertex.indexX - 1; x <= vertex.indexX + 1; x++) {
 
-                if (terrain.getVertex(x, y).y < lowestVertex.y)
-                {
-                    lowestVertex = terrain.getVertex(x, y);
+                let vertexToCompare = terrain.getVertex(x, y);
+                if (vertexToCompare != null && vertexToCompare.y < lowestVertex.y) {
+                    lowestVertex = vertexToCompare as ClimateVertex;
                 }
             }
         }
