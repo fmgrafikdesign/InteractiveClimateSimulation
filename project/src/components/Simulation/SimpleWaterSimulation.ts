@@ -4,7 +4,7 @@ import ClimateVertex from "../Terrain/Baseclasses/ClimateVertex";
 import ITerrain from "../Terrain/ITerrain";
 
 // Areas higher up are slower to heat up than areas further down. That's about it.
-export default class TrivialWaterSimulation implements ISimulation {
+export default class SimpleWaterSimulation implements ISimulation {
 
     private rainProbability: number = 0.15;
 
@@ -81,5 +81,4 @@ export default class TrivialWaterSimulation implements ISimulation {
 
         return lowestVertex;
     }
-
 }

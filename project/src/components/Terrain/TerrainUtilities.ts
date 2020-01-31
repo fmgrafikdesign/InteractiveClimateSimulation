@@ -1,5 +1,6 @@
 import {PlaneGeometry, Vector2, Vector3} from "three";
 import ClimateVertex from "./Baseclasses/ClimateVertex";
+import ITerrain from "./ITerrain";
 
 
 export default class TerrainUtilities {
@@ -114,5 +115,26 @@ export default class TerrainUtilities {
         let size: Vector3 = new Vector3();
         geometry.boundingBox.getSize(size);
         return size.y;
+    }
+
+    public static getMaxHeight(terrain: ITerrain): number {
+        let maxHeight = terrain.getVertices()[0].y;
+        terrain.getVertices().forEach((vertex) => {
+            if (maxHeight < vertex.y) {
+                maxHeight = vertex.y;
+            }
+        });
+        return Math.round(maxHeight);
+    }
+
+    public static getMinHeight(terrain: ITerrain): number {
+        let minHeight = terrain.getVertices()[0].y;
+        terrain.getVertices().forEach((vertex) => {
+            if (minHeight > vertex.y && vertex.y > 1) {
+                // console.log('vertice # ', index, 'was smaller than the previous minimum. (with ', vertex.y, ')')
+                minHeight = vertex.y;
+            }
+        });
+        return Math.round(minHeight);
     }
 }

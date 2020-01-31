@@ -1,10 +1,11 @@
 import {Vector3} from "three";
 import ITerrain from "../Terrain/ITerrain";
 import SimulationContext from "./SimulationContext";
-import TrivialWaterSimulation from "./TrivialWaterSimulation";
+import SimpleWaterSimulation from "./SimpleWaterSimulation";
 
 // The strategy pattern is used to allow quick switching between strategies.
-const strategy = new TrivialWaterSimulation();
+const strategy = new SimpleWaterSimulation();
+//const strategy = new TrivialTemperatureHumiditySimulation();
 
 /**
  * Things that would be great to simulate in a true climate simulation:

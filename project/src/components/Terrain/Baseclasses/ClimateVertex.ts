@@ -1,37 +1,29 @@
-import {Color, Vector3} from "three";
+import {Vector3} from "three";
+import StaticDefines from "../../StaticDefines";
 
 export default class ClimateVertex extends Vector3 {
 
     private _airFlow: Vector3;
     private _humidity: number;
     private _energy: number;
-    private _temperature: number;
     private _originalHeight: number;
 
     private _indexX: number;
     private _indexY: number;
 
-    /**
-     * Defines, by how much the vertex rises for each water unit, that is additionally put onto it if this vertex already is completely wet
-     */
-    private heightIncreasePerWaterUnit: number = 0.2;
+    private currentThermalConductivity: number;
 
     constructor(x?: number, y?: number, z?: number, indexX?: number, indexY?: number) {
         super(x, y, z);
         this._humidity = 0;
         this._energy = 0;
-        this._temperature = 0;
         this._airFlow = new Vector3();
         this._originalHeight = z as number;
 
         this._indexX = (indexX) ? indexX : 0;
         this._indexY = (indexY) ? indexY : 0;
-    }
 
-    public getColor(): Color {
-
-        // TODO: add calculation to return a color based on the height, humidity and current energy of the vertex
-        return new Color(1, 1, 1);
+        this.currentThermalConductivity = StaticDefines.thermalConductivityDirtMoist;
     }
 
     get humidity(): number {
@@ -46,16 +38,18 @@ export default class ClimateVertex extends Vector3 {
      */
     set humidity(value: number) {
         if (value > 1) {
-            this.y += (value - 1) * this.heightIncreasePerWaterUnit;
+            this.y += (value - 1) * StaticDefines.heightIncreasePerWaterUnit;
             this._humidity = 1;
         }
         else if (this._humidity == 1 && value < 1 && this.y > this._originalHeight) {
             // decrease the current height, but maximal to the original height
-            this.y = Math.max(this._originalHeight, this.y - (1 - value) * this.heightIncreasePerWaterUnit);
+            this.y = Math.max(this._originalHeight, this.y - (1 - value) * StaticDefines.heightIncreasePerWaterUnit);
         }
         else {
             this._humidity = value;
         }
+
+        this.updateCurrentThermalConductivity();
     }
 
     get energy(): number {
@@ -75,11 +69,11 @@ export default class ClimateVertex extends Vector3 {
     }
 
     get temperature(): number {
-        return this._temperature;
+        return this.energy / this.currentThermalConductivity - StaticDefines.zeroCelsiusInKelvin;
     }
 
     set temperature(value: number) {
-        this._temperature = value;
+        this.energy += this.currentThermalConductivity;
     }
 
     get originalHeight(): number {
@@ -104,5 +98,25 @@ export default class ClimateVertex extends Vector3 {
 
     set indexY(value: number) {
         this._indexY = value;
+    }
+
+    private updateCurrentThermalConductivity(): void {
+        if (this.humidity < 0.2) {
+            this.currentThermalConductivity = StaticDefines.thermalConductivityDirtVeryDry;
+        }
+        else if (this.humidity < 0.4) {
+            this.currentThermalConductivity = StaticDefines.thermalConductivityDirtDry;
+        }
+        else if (this.humidity < 0.6) {
+            this.currentThermalConductivity = StaticDefines.thermalConductivityDirtMoist;
+        }
+        else if (this.humidity < 0.9) {
+            this.currentThermalConductivity = StaticDefines.thermalConductivityDirtVeryMoist;
+        }
+        else {
+            this.currentThermalConductivity = StaticDefines.thermalConductivityWater;
+        }
+
+        // TODO: implement some system, that saves what ground type this vertex is (dirt, stone, water, ...) and take this also as calculation basis for the current thermal conductivity
     }
 }

@@ -240,8 +240,6 @@ export default function App(): m.Component {
 
         lngLatArray.forEach((item) => { targetArray.push([item.lng, item.lat])});
 
-        console.log(targetArray);
-
         return targetArray;
     }
 

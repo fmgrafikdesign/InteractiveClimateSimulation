@@ -1,34 +1,20 @@
 import ISimulation from "./ISimulation";
 import Simulation from "./Simulation";
 import Helpers from "../Helpers";
+import TerrainUtilities from "../Terrain/TerrainUtilities";
 
 // Areas higher up are slower to heat up than areas further down. That's about it.
 export default class TrivialTemperatureSimulation implements ISimulation {
     minHeight: number = 999999;
     maxHeight: number = 0;
     setup(): void {
-        this.computeMinMaxHeight();
+        this.minHeight = TerrainUtilities.getMinHeight(Simulation.terrain);
+        this.maxHeight = TerrainUtilities.getMaxHeight(Simulation.terrain);
         this.initalizeVertexTemperatureBasedOnHeight();
     }
 
     tick(): void {
         this.changeTemperatur();
-    }
-
-    private computeMinMaxHeight() {
-        let minHeight = 999999;
-        let maxHeight = 0;
-        Simulation.terrain.getVertices().forEach((vertex, index) => {
-            if (minHeight > vertex.y && vertex.y > 1) {
-                // console.log('vertice # ', index, 'was smaller than the previous minimum. (with ', vertex.y, ')')
-                minHeight = vertex.y;
-            }
-            if (maxHeight < vertex.y) {
-                maxHeight = vertex.y;
-            }
-        });
-        this.minHeight = Math.round(minHeight);
-        this.maxHeight = Math.round(maxHeight);
     }
 
     private initalizeVertexTemperatureBasedOnHeight() {
