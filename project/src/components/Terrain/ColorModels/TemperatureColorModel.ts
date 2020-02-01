@@ -1,21 +1,24 @@
 import {ITerrainColorModel} from "./ITerrainColorModel";
-import Terrain from "../TerrainFabian";
 import ClimateVertex from "../Baseclasses/ClimateVertex";
+import StaticDefines from "../../StaticDefines";
+import Helpers from "../../Helpers";
+import ITerrain from "../ITerrain";
 
 export default class TemperatureColorModel implements ITerrainColorModel {
-    updateMeshColors(terrain: Terrain): void {
-        const maxTemp = 40;
-        const minTemp = -20;
+    updateMeshColors(terrain: ITerrain): void {
+        const maxTemp = 50 + StaticDefines.zeroCelsiusInKelvin;
+        const minTemp = -20 + StaticDefines.zeroCelsiusInKelvin;
 
-        terrain.geometry.faces.forEach((face, index) => {
-            const a = terrain.geometry.vertices[face.a] as ClimateVertex;
-            const b = terrain.geometry.vertices[face.b] as ClimateVertex;
-            const c = terrain.geometry.vertices[face.c] as ClimateVertex;
+        const geometry = terrain.getGeometry();
+        geometry.faces.forEach((face, index) => {
+            const a = geometry.vertices[face.a] as ClimateVertex;
+            const b = geometry.vertices[face.b] as ClimateVertex;
+            const c = geometry.vertices[face.c] as ClimateVertex;
             const temperature = (a.temperature + b.temperature + c.temperature) / 3;
 
-            let r = 1 / (maxTemp - minTemp) * (temperature - minTemp);
+            let r = Helpers.quantize(Helpers.clamp(1 / (maxTemp - minTemp) * (temperature - minTemp), 0, 1), 0, 1);
             let g = 1;
-            let b2 = 1 / (maxTemp - minTemp) * (maxTemp - temperature);
+            let b2 = Helpers.quantize(Helpers.clamp(1 / (maxTemp - minTemp) * (maxTemp - temperature), 0, 1), 0, 1);
 
             const color = {r, g, b: b2};
 

@@ -1,19 +1,23 @@
 // Sets mesh color according to height
 
 import {ITerrainColorModel} from "./ITerrainColorModel";
-import Terrain from "../TerrainFabian";
-import MapboxMathUtils from "../Generators/MapboxMathUtils";
+import ITerrain from "../ITerrain";
+import TerrainUtilities from "../TerrainUtilities";
 
 export default class HeightColorModel implements ITerrainColorModel{
-    updateMeshColors(terrain: Terrain) {
+    updateMeshColors(terrain: ITerrain) {
 
-        let min_height = MapboxMathUtils.getHeightFromRGBA(255, 255, 255);
-        let max_height = 0;
+        // let min_height = MapboxMathUtils.getHeightFromRGBA(255, 255, 255);
+        // let max_height = 0;
 
-        terrain.geometry.faces.forEach((face) => {
-            const a = terrain.geometry.vertices[face.a];
-            const b = terrain.geometry.vertices[face.b];
-            const c = terrain.geometry.vertices[face.c];
+        let min_height = TerrainUtilities.getMinHeight(terrain);
+        let max_height = TerrainUtilities.getMaxHeight(terrain);
+
+        const geometry = terrain.getGeometry();
+        geometry.faces.forEach((face) => {
+            const a = geometry.vertices[face.a];
+            const b = geometry.vertices[face.b];
+            const c = geometry.vertices[face.c];
 
             const average = (a.y + b.y + c.y) / 3;
             if (average <= 0) {

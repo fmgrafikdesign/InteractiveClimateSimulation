@@ -1,10 +1,12 @@
 import {Vector3} from "three";
 import ITerrain from "../Terrain/ITerrain";
 import SimulationContext from "./SimulationContext";
-import SimpleWaterSimulation from "./SimpleWaterSimulation";
+import SimpleMatthiasscheEnergyWaterSimulation from "./SimpleMatthiasscheEnergyWaterSimulation";
 
 // The strategy pattern is used to allow quick switching between strategies.
-const strategy = new SimpleWaterSimulation();
+const strategy = new SimpleMatthiasscheEnergyWaterSimulation();
+//const strategy = new SimpleEnergySimulation();
+//const strategy = new SimpleWaterSimulation();
 //const strategy = new TrivialTemperatureHumiditySimulation();
 
 /**
@@ -33,7 +35,7 @@ export default class Simulation {
     static context = new SimulationContext();
 
     static paused: boolean = false;
-    static milliSecondsPerTick: number = 200;
+    static milliSecondsPerTick: number = 1;
     static currentTick: number = 0;
     static currentTickFinished: boolean = true;
     static lastTickTime: number = 0;
@@ -58,6 +60,9 @@ export default class Simulation {
      */
     static rainfallProbability: number;
 
+
+    static averageRainDuration: number;
+
     /**
      * Instance of the terrain (or shall we keep an instance of the terrain controller?) to be able to quickly access all needed properties
      */
@@ -68,9 +73,10 @@ export default class Simulation {
             this.milliSecondsPerTick = milliSecondsPerTick;
         }
         this.terrain = terrain;
-        this.sunEnergyInput = 1;
+        this.sunEnergyInput = 300;
         this.outerAirFlow = new Vector3(1, 1, 0);
-        this.rainfallProbability = 0.5;
+        this.rainfallProbability = 0.15;
+        this.averageRainDuration = 100;
 
         this.context.setStrategy(strategy);
         this.context.setupStrategy();
@@ -103,8 +109,7 @@ export default class Simulation {
     static tick() {
         const startTime = this.startCollectingTickInfo();
 
-        this.context.executeStrategy();
-
+        this.context.executeStrategy(this.milliSecondsPerTick / 1000);
 
         //this.terrain.updateMeshColors(this.context.getColorModel());
 

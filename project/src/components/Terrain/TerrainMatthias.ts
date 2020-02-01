@@ -1,4 +1,4 @@
-import {Geometry, Mesh, MeshLambertMaterial, PlaneGeometry, Vector3, VertexColors} from "three";
+import {Mesh, MeshLambertMaterial, PlaneGeometry, Vector3, VertexColors} from "three";
 import ClimateVertex from "./Baseclasses/ClimateVertex";
 import ITerrain from "./ITerrain";
 import {ITerrainColorModel} from "./ColorModels/ITerrainColorModel";
@@ -9,7 +9,7 @@ export default class Terrain implements ITerrain {
     private readonly nrOfVerticesX: number;
     private readonly nrOfVerticesY: number;
 
-    private geometry: Geometry;
+    private geometry: PlaneGeometry;
     private _mesh: Mesh;
 
     constructor(geometry: PlaneGeometry, nrOfVerticesX: number = 50, nrOfVerticesY: number = 50) {
@@ -64,26 +64,6 @@ export default class Terrain implements ITerrain {
         }
     }
 
-    public get mesh(): Mesh {
-        return this._mesh;
-    }
-
-    public set mesh(meshToSet: Mesh) {
-        this._mesh = meshToSet;
-    }
-
-    public getHighestPoint(): number {
-        let maxHeight = this.geometry.vertices[0].z;
-
-        this.geometry.vertices.forEach(value => {
-            if (value.z > maxHeight) {
-                maxHeight = value.z;
-            }
-        });
-
-        return maxHeight;
-    }
-
     updateMeshColors(colorModel: ITerrainColorModel): void {
         colorModel.updateMeshColors(this);
 
@@ -98,12 +78,15 @@ export default class Terrain implements ITerrain {
         if (geometry.vertices.length != 0 && geometry.vertices.length != this.geometry.vertices.length) {
             console.log("Unequal number of vertices detected. Trying to fit the new geometry on the old.");
 
-            geometry = TerrainUtilities.fitGeometryInBounds(geometry, TerrainUtilities.getWidth(this.geometry as PlaneGeometry), TerrainUtilities.getHeight(this.geometry as PlaneGeometry));
+            geometry = TerrainUtilities.fitGeometryInBounds(geometry, TerrainUtilities.getWidth(this.geometry as PlaneGeometry), TerrainUtilities.getDepth(this.geometry as PlaneGeometry));
             geometry = TerrainUtilities.interpolateShrinkVertexDensity(geometry, this.nrOfVerticesX, this.nrOfVerticesY);
         }
 
         this.geometry.dispose();
         this.geometry = geometry;
+
+        // Rotate mesh so Z is the new Y coordinate.
+        this.geometry.rotateX(-Math.PI / 2);
 
         this.ConvertGeometryVerticesToClimateVertices();
 
@@ -118,10 +101,8 @@ export default class Terrain implements ITerrain {
             vertexColors: VertexColors
         });
 
-        // Rotate mesh so Z is the new Y coordinate.
-        this.geometry.rotateX(-Math.PI / 2);
 
-        this.mesh = new Mesh(this.geometry, material);
+        this._mesh = new Mesh(this.geometry, material);
 
         // Restart the simulation after updating the mesh
         Simulation.reset();
@@ -132,9 +113,40 @@ export default class Terrain implements ITerrain {
         return this.geometry.vertices as ClimateVertex[];
     }
 
+    getGeometry(): PlaneGeometry {
+        return this.geometry;
+    }
+
     getMesh(): Mesh {
         return this._mesh;
     }
+
+    /*
+    adjustVertexHeights(): void {
+        let vertexChanged: boolean = false;
+        this.geometry.vertices.forEach((vertex) => {
+            const currentVertex: ClimateVertex = vertex as ClimateVertex;
+
+            if (currentVertex.y != currentVertex.targetHeight) {
+                if (Math.abs(currentVertex.y - currentVertex.targetHeight) < 0.1) {
+                    currentVertex.y = currentVertex.targetHeight;
+                }
+                else {
+                    currentVertex.y += Helpers.clamp((currentVertex.y - currentVertex.targetHeight) * 0.5, 0.1, 1);
+                }
+
+                vertexChanged = true;
+            }
+        });
+
+        if (vertexChanged) {
+            this.geometry.verticesNeedUpdate = true;
+
+            // Flat shading normal computing
+            this.geometry.computeFlatVertexNormals();
+        }
+    }
+     */
 
     private isInBounds(indexX: number, indexY: number): boolean {
         return indexX >= 0 && indexX < this.nrOfVerticesX && indexY >= 0 && indexY < this.nrOfVerticesY;

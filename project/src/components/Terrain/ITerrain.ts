@@ -13,5 +13,7 @@ export default interface ITerrain {
 
     getVertices(): ClimateVertex[];
 
+    getGeometry(): PlaneGeometry;
+
     getMesh(): Mesh;
 }

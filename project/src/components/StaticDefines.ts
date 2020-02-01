@@ -6,6 +6,12 @@ export default class StaticDefines {
     public static readonly heightIncreasePerWaterUnit: number = 0.2;
 
 
+    /**
+     * Defines how many sub steps of a color are there when coloring a face.
+     */
+    public static readonly nrOfColorSteps: number = 10;
+
+
     public static readonly zeroCelsiusInKelvin: number = 273.15;
 
 

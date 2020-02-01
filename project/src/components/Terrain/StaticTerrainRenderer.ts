@@ -1,11 +1,30 @@
 import m from 'mithril';
-import {AmbientLight, AxesHelper, BoxGeometry, Color, DirectionalLight, Material, Mesh, MeshBasicMaterial, OrthographicCamera, PlaneGeometry, Scene, WebGLRenderer} from "three";
+import {
+    AmbientLight,
+    AxesHelper,
+    BoxGeometry,
+    Color,
+    DirectionalLight,
+    Face3,
+    Intersection,
+    Material,
+    Mesh,
+    MeshBasicMaterial,
+    Object3D,
+    OrthographicCamera,
+    PlaneGeometry,
+    Raycaster,
+    Scene,
+    Vector2,
+    WebGLRenderer
+} from "three";
 import {debounce} from "ts-debounce";
 import {OrbitControls} from "three-orbitcontrols-ts";
 import {ITerrainGenerator} from "./Generators/ITerrainGenerator";
 import LngLatTerrainGenerator from "./Generators/LngLatTerrainGenerator";
 import ITerrain from "./ITerrain";
 import Simulation from "../Simulation/Simulation";
+import ClimateVertex from "./Baseclasses/ClimateVertex";
 
 export default class StaticTerrainRenderer {
     static generator: ITerrainGenerator = new LngLatTerrainGenerator();
@@ -13,9 +32,12 @@ export default class StaticTerrainRenderer {
     static canvas: HTMLCanvasElement;
     static scene: Scene;
     static camera: OrthographicCamera;
+    static cameraController: Object3D;
     static frameCounter: number;
     static material: Material;
     static terrain: ITerrain = StaticTerrainRenderer.generator.generate();
+
+    static activeFace: Face3;
 
     static updateTerrainGeometry(geometry: PlaneGeometry) {
         if (!this.terrain) {
@@ -48,7 +70,7 @@ export default class StaticTerrainRenderer {
 
         // this.addOrbitControls();
         // this.addAxisHelper();
-        // this.initializeTerrainAdjustingControls();
+        this.initializeTerrainAdjustingControls();
         // this.addCubeToTestRendering();
 
         this.render();
@@ -71,12 +93,16 @@ export default class StaticTerrainRenderer {
     }
 
     private static setupSceneCamera(distance: number) {
+        this.cameraController = new Object3D();
         const aspect = window.innerWidth / window.innerHeight;
         this.camera = new OrthographicCamera(-distance * aspect, distance * aspect, distance, -distance, 1, 2000);
         this.camera.position.set(distance, distance, distance);
         this.camera.lookAt(this.scene.position);
         this.camera.up.set(1, 0, 1);
         this.camera.updateProjectionMatrix();
+
+        this.cameraController.add(this.camera);
+        this.scene.add(this.cameraController);
     }
 
     private static addSceneLights() {
@@ -147,22 +173,22 @@ export default class StaticTerrainRenderer {
             } else if (e.code == "ArrowRight") {
                 this.camera.position.set(this.camera.position.x - 5, this.camera.position.y, this.camera.position.z);
             } else if (e.code == "KeyW") {
-                this.terrain.getMesh().geometry.rotateX(Math.PI / 8);
+                this.cameraController.rotateX(Math.PI / 8);
             } else if (e.code == "KeyS") {
-                this.terrain.getMesh().geometry.rotateX(-Math.PI / 2);
+                this.cameraController.rotateX(-Math.PI / 8);
             } else if (e.code == "KeyA") {
-                this.terrain.getMesh().geometry.rotateY(Math.PI / 8);
+                this.cameraController.rotateY(Math.PI / 8);
             } else if (e.code == "KeyD") {
-                this.terrain.getMesh().geometry.rotateY(-Math.PI / 8);
+                this.cameraController.rotateY(-Math.PI / 8);
             } else if (e.code == "KeyQ") {
-                this.terrain.getMesh().geometry.rotateZ(Math.PI / 8);
+                this.cameraController.rotateZ(Math.PI / 8);
             } else if (e.code == "KeyE") {
-                this.terrain.getMesh().geometry.rotateZ(-Math.PI / 8);
+                this.cameraController.rotateZ(-Math.PI / 8);
             } else if (e.code == "KeyP") {
                 Simulation.pause();
             }
 
-            console.log(this.terrain.getMesh().geometry);
+            // console.log(this.terrain.getMesh().geometry);
 
             this.camera.updateProjectionMatrix();
         });
@@ -175,6 +201,26 @@ export default class StaticTerrainRenderer {
     private static updateTerrain()
     {
         this.terrain.updateMeshColors(Simulation.context.getColorModel());
-        // TODO: update terrain colors
+
+        if (this.activeFace) {
+            this.activeFace.color.setRGB(1, 0, 0);
+        }
+    }
+
+    public static rayCast(mouse: MouseEvent): void {
+
+        let rayCaster: Raycaster = new Raycaster();
+        rayCaster.setFromCamera(new Vector2(mouse.clientX, mouse.clientY), this.camera);
+
+        let intersects: Intersection[] = rayCaster.intersectObject(this.terrain.getMesh());
+
+        console.log(intersects.length);
+        intersects.forEach((intersection) => {
+            const hitVertex: ClimateVertex = intersection.point as ClimateVertex;
+            const hitFace: Face3 = intersection.face as Face3;
+
+            this.activeFace = hitFace;
+            // TODO: special color hit face (and vertex)
+        });
     }
 }

@@ -66,7 +66,7 @@ export default class TerrainUtilities {
 
     public static smooth(geometry: PlaneGeometry, radius: number, strength: number, iterations: number = 5): PlaneGeometry {
         let vertexSize: Vector2 = this.getNrOfVerticesOfGeometry(geometry);
-        let copyGeometry: PlaneGeometry = new PlaneGeometry(this.getWidth(geometry), this.getHeight(geometry), vertexSize.x - 1, vertexSize.y - 1);
+        let copyGeometry: PlaneGeometry = new PlaneGeometry(this.getWidth(geometry), this.getDepth(geometry), vertexSize.x - 1, vertexSize.y - 1);
 
         for (let iteration = 0; iteration < iterations; iteration++) {
             const verticesBefore = geometry.vertices;
@@ -109,7 +109,7 @@ export default class TerrainUtilities {
         return size.x;
     }
 
-    public static getHeight(geometry: PlaneGeometry): number {
+    public static getDepth(geometry: PlaneGeometry): number {
         geometry.computeBoundingBox();
 
         let size: Vector3 = new Vector3();
@@ -117,24 +117,32 @@ export default class TerrainUtilities {
         return size.y;
     }
 
+    /*
+    public static setYAsTargetHeight(geometry: PlaneGeometry, newValueForY: number = 0): void {
+        geometry.vertices.forEach((vertex) => {
+            (vertex as ClimateVertex).targetHeight = vertex.y;
+            vertex.y = newValueForY;
+        });
+    }
+
+    public static setTargetHeightAsY(geometry: PlaneGeometry): void {
+        geometry.vertices.forEach((vertex) => {
+            vertex.y = (vertex as ClimateVertex).targetHeight;
+            (vertex as ClimateVertex).targetHeight = vertex.y;
+        });
+    }
+
+     */
+
     public static getMaxHeight(terrain: ITerrain): number {
         let maxHeight = terrain.getVertices()[0].y;
-        terrain.getVertices().forEach((vertex) => {
-            if (maxHeight < vertex.y) {
-                maxHeight = vertex.y;
-            }
-        });
+        terrain.getVertices().forEach((vertex) => { maxHeight = Math.max(maxHeight, vertex.y); });
         return Math.round(maxHeight);
     }
 
     public static getMinHeight(terrain: ITerrain): number {
         let minHeight = terrain.getVertices()[0].y;
-        terrain.getVertices().forEach((vertex) => {
-            if (minHeight > vertex.y && vertex.y > 1) {
-                // console.log('vertice # ', index, 'was smaller than the previous minimum. (with ', vertex.y, ')')
-                minHeight = vertex.y;
-            }
-        });
+        terrain.getVertices().forEach((vertex) => { minHeight = Math.min(minHeight, vertex.y); });
         return Math.round(minHeight);
     }
 }

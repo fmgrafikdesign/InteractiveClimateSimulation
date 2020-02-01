@@ -1,29 +1,41 @@
 import {Vector3} from "three";
 import StaticDefines from "../../StaticDefines";
+import Helpers from "../../Helpers";
 
 export default class ClimateVertex extends Vector3 {
 
     private _airFlow: Vector3;
     private _humidity: number;
     private _energy: number;
+
+    /**
+     * The original height of this vertex. This is stored, because the actual height might change over the course of the simulation.
+     * e.g. when this vertex is only water and the water level rises
+     */
     private _originalHeight: number;
 
+    /**
+     * The x index of this vertex in the over all terrain.
+     */
     private _indexX: number;
+    /**
+     * The y index of this vertex in the over all terrain.
+     */
     private _indexY: number;
 
-    private currentThermalConductivity: number;
+    private _currentThermalConductivity: number;
 
     constructor(x?: number, y?: number, z?: number, indexX?: number, indexY?: number) {
         super(x, y, z);
         this._humidity = 0;
         this._energy = 0;
         this._airFlow = new Vector3();
-        this._originalHeight = z as number;
+        this._originalHeight = y as number;
 
         this._indexX = (indexX) ? indexX : 0;
         this._indexY = (indexY) ? indexY : 0;
 
-        this.currentThermalConductivity = StaticDefines.thermalConductivityDirtMoist;
+        this._currentThermalConductivity = StaticDefines.thermalConductivityDirtMoist;
     }
 
     get humidity(): number {
@@ -57,7 +69,7 @@ export default class ClimateVertex extends Vector3 {
     }
 
     set energy(value: number) {
-        this._energy = value;
+        this._energy = Math.max(0, value);
     }
 
     get airFlow(): Vector3 {
@@ -68,12 +80,19 @@ export default class ClimateVertex extends Vector3 {
         this._airFlow = value;
     }
 
+    /**
+     * Returns the current temperature of this vertex in Kelvin
+     */
     get temperature(): number {
-        return this.energy / this.currentThermalConductivity - StaticDefines.zeroCelsiusInKelvin;
+        return this.energy / this._currentThermalConductivity;
     }
 
+    /**
+     * Sets the amount of energy in the current vertex to how much is need for the wanted temperature -> ergo sets the temperature of this vertex
+     * @param value The wanted temperature in Kelvin
+     */
     set temperature(value: number) {
-        this.energy += this.currentThermalConductivity;
+        this.energy += this._currentThermalConductivity * (value - this.temperature);
     }
 
     get originalHeight(): number {
@@ -100,21 +119,25 @@ export default class ClimateVertex extends Vector3 {
         this._indexY = value;
     }
 
+    get currentThermalConductivity(): number {
+        return this._currentThermalConductivity;
+    }
+
     private updateCurrentThermalConductivity(): void {
         if (this.humidity < 0.2) {
-            this.currentThermalConductivity = StaticDefines.thermalConductivityDirtVeryDry;
+            this._currentThermalConductivity = StaticDefines.thermalConductivityDirtVeryDry;
         }
         else if (this.humidity < 0.4) {
-            this.currentThermalConductivity = StaticDefines.thermalConductivityDirtDry;
+            this._currentThermalConductivity = Helpers.interpolateLinear(StaticDefines.thermalConductivityDirtDry, StaticDefines.thermalConductivityDirtVeryDry, (0.4 - this.humidity) / 0.2);
         }
         else if (this.humidity < 0.6) {
-            this.currentThermalConductivity = StaticDefines.thermalConductivityDirtMoist;
+            this._currentThermalConductivity = Helpers.interpolateLinear(StaticDefines.thermalConductivityDirtMoist, StaticDefines.thermalConductivityDirtDry, (0.6 - this.humidity) / 0.2);
         }
         else if (this.humidity < 0.9) {
-            this.currentThermalConductivity = StaticDefines.thermalConductivityDirtVeryMoist;
+            this._currentThermalConductivity = Helpers.interpolateLinear(StaticDefines.thermalConductivityDirtVeryMoist, StaticDefines.thermalConductivityDirtMoist, (0.9 - this.humidity) / 0.3);
         }
         else {
-            this.currentThermalConductivity = StaticDefines.thermalConductivityWater;
+            this._currentThermalConductivity = Helpers.interpolateLinear(StaticDefines.thermalConductivityWater, StaticDefines.thermalConductivityDirtVeryMoist, (1 - this.humidity) / 0.1);
         }
 
         // TODO: implement some system, that saves what ground type this vertex is (dirt, stone, water, ...) and take this also as calculation basis for the current thermal conductivity

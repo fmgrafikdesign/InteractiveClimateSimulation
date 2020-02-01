@@ -13,7 +13,7 @@ export default class SimpleWaterSimulation implements ISimulation {
         this.initializeVertexHumidity();
     }
 
-    tick(): void {
+    tick(deltaTime: number): void {
         this.changeHumidity();
     }
 
@@ -41,6 +41,7 @@ export default class SimpleWaterSimulation implements ISimulation {
                 if (lowestNeighbour != vertex && (vertex.temperature > 0 || vertex.y - lowestNeighbour.y > 5)) {
                     // transfer humidity to the lowest neighbour vertex based on the height difference between the vertices, but maximal 95% of the current vertices humidity
                     let humidityExchange = Math.max(0, Math.min(vertex.humidity * 0.95, (vertex.humidity * 0.95 * (vertex.y - lowestNeighbour.y))));
+                    // TODO: exchange humidity also based on the current humidity quadratically
 
                     lowestNeighbour.humidity += humidityExchange;
                     vertex.humidity -= humidityExchange;

@@ -10,9 +10,9 @@ export default class SimulationContext {
         this.strategy = simulationStrategy;
     }
 
-    public executeStrategy() {
+    public executeStrategy(deltaTime: number) {
         if (this.strategy) {
-            return this.strategy.tick();
+            return this.strategy.tick(deltaTime);
         }
     }
 

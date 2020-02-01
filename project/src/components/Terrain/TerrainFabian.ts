@@ -85,6 +85,10 @@ export default class Terrain implements ITerrain {
         return this.vertices;
     }
 
+    getGeometry(): PlaneGeometry {
+        return this.geometry as PlaneGeometry;
+    }
+
     private isInBounds(indexX: number, indexY: number): boolean {
         return indexX >= 0 && indexX < this.verticesX && indexY >= 0 && indexY < this.verticesY;
     }

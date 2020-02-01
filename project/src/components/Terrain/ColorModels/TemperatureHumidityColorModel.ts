@@ -1,16 +1,17 @@
 import {ITerrainColorModel} from "./ITerrainColorModel";
-import Terrain from "../TerrainFabian";
 import ClimateVertex from "../Baseclasses/ClimateVertex";
+import ITerrain from "../ITerrain";
 
 export default class TemperatureHumidityColorModel implements ITerrainColorModel {
-    updateMeshColors(terrain: Terrain): void {
+    updateMeshColors(terrain: ITerrain): void {
         const maxTemp = 40;
         const minTemp = -20;
 
-        terrain.geometry.faces.forEach((face, index) => {
-            const a = terrain.geometry.vertices[face.a] as ClimateVertex;
-            const b = terrain.geometry.vertices[face.b] as ClimateVertex;
-            const c = terrain.geometry.vertices[face.c] as ClimateVertex;
+        const geometry = terrain.getGeometry();
+        geometry.faces.forEach((face, index) => {
+            const a = geometry.vertices[face.a] as ClimateVertex;
+            const b = geometry.vertices[face.b] as ClimateVertex;
+            const c = geometry.vertices[face.c] as ClimateVertex;
             const temperature = (a.temperature + b.temperature + c.temperature) / 3;
             const humidity = (a.humidity + b.humidity + c.humidity) / 3;
             // r = 1 -> trocken, r = 0 -> nass

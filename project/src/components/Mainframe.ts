@@ -107,10 +107,8 @@ export default function App(): m.Component {
 
                 if (showTileFilled) {
                     addRectangle([lngLat1, lngLat2, lngLat4, lngLat3], mouseEvent);
+                    console.debug("Setting highlighter for tile: [" + indices.x + "," + indices.y + "]");
                 }
-
-                console.debug("Setting marker for tile: [" + indices.x + "," + indices.y + "]");
-                console.debug(MapboxMathUtils.getLongitudeLatitudeFromIndex(indices.x, indices.y, indices.z));
             }
         }
     }
@@ -144,7 +142,7 @@ export default function App(): m.Component {
                 center: [14.515, 48.368], // Specify the starting position [lng, lat]
                 container: 'map', // Specify the container ID
                 style: 'mapbox://styles/mapbox/outdoors-v11', // Specify which map style to use
-                zoom: 15.5 // Specify the starting zoom
+                zoom: 14.5 // Specify the starting zoom
             });
             map.on("click", clickOnMap);
             map.on("mousemove", hoverMap);
@@ -173,7 +171,7 @@ export default function App(): m.Component {
             return m('.app',
                 [
                     m('#mapWrapper', m('div#map')),
-                    m('.canvas-wrapper', m('canvas#terrain-canvas')),
+                    m('.canvas-wrapper', m('canvas#terrain-canvas', {onclick: (mouse: MouseEvent) => { StaticTerrainRenderer.rayCast(mouse)}})),
                     m('.ui', [
                         m('#MapGetterButton.Map-Button.UI-Element-Container',
                             m('.Map-Button-Label.Map-Getter-Button-Label.clickable', {onclick: () => showMap()}, [
@@ -187,7 +185,7 @@ export default function App(): m.Component {
                             ])),
                         m('#helperInfo.UI-Element-Container', m('', 'click anywhere on the map to load this area in 3D')),
                         m('#debug-info', m(DebugInfo)),
-                        m('#colorModelContainer.UI-Element-Container', [
+                        m('#colorModelContainer.UI-Element-Container.active', [
                             m('.colorModelButton.clickable', {onclick: () => changeColorModel("height")}, "Height"),
                             m('.colorModelButton.clickable', {onclick: () => changeColorModel("humidity")}, "Humidity"),
                             m('.colorModelButton.clickable', {onclick: () => changeColorModel("temperature")}, "Temperature"),
