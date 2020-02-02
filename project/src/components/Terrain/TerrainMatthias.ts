@@ -12,12 +12,16 @@ export default class Terrain implements ITerrain {
     private geometry: PlaneGeometry;
     private _mesh: Mesh;
 
+    private hasBorderVertices: boolean;
+
     constructor(geometry: PlaneGeometry, nrOfVerticesX: number = 50, nrOfVerticesY: number = 50) {
         this.nrOfVerticesX = nrOfVerticesX;
         this.nrOfVerticesY = nrOfVerticesY;
 
         this.geometry = geometry;
         this._mesh = new Mesh();
+
+        this.hasBorderVertices = false;
 
         this.updateMesh(geometry);
     }
@@ -46,7 +50,7 @@ export default class Terrain implements ITerrain {
     }
 
     private getVertexPositionInArray(x: number, y: number): number {
-        return x + y * this.nrOfVerticesX;
+        return x + y * this.nrOfVerticesX + (this.hasBorderVertices ? y : 0);
     }
 
     private ZeroAllVertices() {
@@ -74,7 +78,7 @@ export default class Terrain implements ITerrain {
         //this.geometry.computeFlatVertexNormals();
     }
 
-    updateMesh(geometry: PlaneGeometry): void {
+    updateMesh(geometry: PlaneGeometry, insertBorderVertices: boolean = true): void {
         if (geometry.vertices.length != 0 && geometry.vertices.length != this.geometry.vertices.length) {
             console.log("Unequal number of vertices detected. Trying to fit the new geometry on the old.");
 
@@ -84,6 +88,12 @@ export default class Terrain implements ITerrain {
 
         this.geometry.dispose();
         this.geometry = geometry;
+
+        this.hasBorderVertices = insertBorderVertices;
+
+        if (insertBorderVertices) {
+            this.geometry = TerrainUtilities.insertBorderVertices(this.geometry);
+        }
 
         // Rotate mesh so Z is the new Y coordinate.
         this.geometry.rotateX(-Math.PI / 2);

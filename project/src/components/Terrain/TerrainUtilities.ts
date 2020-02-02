@@ -41,6 +41,18 @@ export default class TerrainUtilities {
         return shrunkGeometry;
     }
 
+    public static insertBorderVertices(geometry: PlaneGeometry): PlaneGeometry {
+        const sizeOldGeometry: Vector2 = this.getNrOfVerticesOfGeometry(geometry);
+
+        let newGeometry: PlaneGeometry = new PlaneGeometry(this.getWidth(geometry) + 1, this.getDepth(geometry) + 1, sizeOldGeometry.x, sizeOldGeometry.y);
+
+        geometry.vertices.forEach((vertex, index) => {
+            newGeometry.vertices[index + Math.floor(index / sizeOldGeometry.x)] = vertex;
+        });
+
+        return newGeometry;
+    }
+
     /**
      * Tries to find out the amount of vertices per row and column for a given geometry
      * This method only works, if the geometry is consistent rectangular (the number of vertices does not change over the rows and columns), the first vertex is the one with the lowest x value and x is not the up axis
