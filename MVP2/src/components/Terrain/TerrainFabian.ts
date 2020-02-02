@@ -6,14 +6,11 @@ import TemperatureColorModel from "./ColorModels/TemperatureColorModel";
 import Simulation from "../Simulation/Simulation";
 import ClimateVertex from "./Baseclasses/ClimateVertex";
 import TemperatureHumidityColorModel from "./ColorModels/TemperatureHumidityColorModel";
+import ITerrain from "./ITerrain";
 
-// What model to use for coloring the terrain
-const colorModel = new TemperatureHumidityColorModel();
-
-export class Terrain {
+export class Terrain implements ITerrain {
     mesh: Mesh;
     geometry: Geometry;
-    ColorModel: ITerrainColorModel = colorModel;
     vertices: ClimateVertex[];
     private readonly width: number;
     private readonly height: number;
@@ -46,7 +43,7 @@ export class Terrain {
     // Calculate colors for each face
         this.geometry.dispose();
         this.geometry = geometry;
-        this.updateMeshColors();
+        // this.updateMeshColors();
 
         this.convertVerticesToClimateVertices();
         this.geometry.verticesNeedUpdate = true;
@@ -70,9 +67,43 @@ export class Terrain {
         Simulation.context.setupStrategy();
     }
 
-    updateMeshColors() {
-        this.ColorModel.updateMeshColors(this);
+    updateMeshColors(colorModel: ITerrainColorModel) {
+        colorModel.updateMeshColors(this);
         this.geometry.colorsNeedUpdate = true;
+    }
+
+    getMesh(): Mesh {
+        return this.mesh;
+    }
+
+    public getVertex(indexX: number, indexY: number): ClimateVertex {
+        return (this.isInBounds(indexX, indexY)) ? this.vertices[this.getVertexPositionInArray(indexX, indexY)] : new ClimateVertex();
+    }
+
+    private getVertexPositionInArray(x: number, y: number): number {
+        return x + y * this.verticesX;
+    }
+
+    getVertices(): ClimateVertex[] {
+        return this.vertices;
+    }
+
+    getWidth(): number {
+        this.mesh.geometry.computeBoundingBox();
+
+        let size: Vector3 = new Vector3();
+        return (this.mesh.geometry as Geometry).boundingBox.getSize(size).x;
+    }
+
+    getHeight(): number {
+        this.mesh.geometry.computeBoundingBox();
+
+        let size: Vector3 = new Vector3();
+        return (this.mesh.geometry as Geometry).boundingBox.getSize(size).y;
+    }
+
+    private isInBounds(indexX: number, indexY: number): boolean {
+        return indexX >= 0 && indexX < this.verticesX && indexY >= 0 && indexY < this.verticesY;
     }
 }
 

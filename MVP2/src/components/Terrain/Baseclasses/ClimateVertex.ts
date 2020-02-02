@@ -2,16 +2,23 @@ import {Color, Vector3} from "three";
 
 export default class ClimateVertex extends Vector3 {
 
-    private _airFlow: Vector3 = new Vector3();
-    private _humidity: number = 0;
-    private _energy: number = 0;
-    private _temperature: number = 0;
+    private _airFlow: Vector3;
+    private _humidity: number;
+    private _energy: number;
+    private _temperature: number;
 
-    constructor(x?: number, y?: number, z?: number) {
+    private _indexX: number;
+    private _indexY: number;
+
+    constructor(x?: number, y?: number, z?: number, indexX?: number, indexY?: number) {
         super(x, y, z);
         this._humidity = 0;
         this._energy = 0;
+        this._temperature = 0;
         this._airFlow = new Vector3();
+
+        this._indexX = (indexX) ? indexX : 0;
+        this._indexY = (indexY) ? indexY : 0;
     }
 
     public getColor(): Color {
@@ -50,5 +57,20 @@ export default class ClimateVertex extends Vector3 {
 
     set temperature(value: number) {
         this._temperature = value;
+    }
+    get indexX(): number {
+        return this._indexX;
+    }
+
+    set indexX(value: number) {
+        this._indexX = value;
+    }
+
+    get indexY(): number {
+        return this._indexY;
+    }
+
+    set indexY(value: number) {
+        this._indexY = value;
     }
 }

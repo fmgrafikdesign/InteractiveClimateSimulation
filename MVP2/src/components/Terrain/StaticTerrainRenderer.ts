@@ -40,23 +40,23 @@ export default class StaticTerrainRenderer {
     static camera: OrthographicCamera;
     static frameCounter: number;
     static material: Material;
-    static terrain: Terrain = StaticTerrainRenderer.generator.generate();
+    static terrain: ITerrain = StaticTerrainRenderer.generator.generate();
 
     static updateTerrainGeometry(geometry: PlaneGeometry) {
         if (!this.terrain) {
             console.warn("Tried to updateTerrainMesh, but there is no terrain in the renderer.");
             return;
         }
-        this.scene.remove(this.terrain.mesh);
+        this.scene.remove(this.terrain.getMesh());
         this.terrain.updateMesh(geometry);
-        this.scene.add(this.terrain.mesh);
+        this.scene.add(this.terrain.getMesh());
     }
 
     static generateTerrainWithLatLng(lat: number, lng: number, zoom: number = 13) {
         const gen = new LngLatTerrainGenerator();
-        this.scene.remove(this.terrain.mesh);
+        this.scene.remove(this.terrain.getMesh());
         this.terrain = gen.generate(lat, lng);
-        this.scene.add(this.terrain.mesh);
+        this.scene.add(this.terrain.getMesh());
     }
 
     static init(canvas: HTMLCanvasElement, cameraDistance: number = 400) {
@@ -69,7 +69,7 @@ export default class StaticTerrainRenderer {
         this.setupScene();
         this.setupSceneCamera(cameraDistance);
         this.addSceneLights();
-        this.scene.add(this.terrain.mesh);
+        this.scene.add(this.terrain.getMesh());
 
         // this.addOrbitControls();
         // this.addAxisHelper();
@@ -172,22 +172,22 @@ export default class StaticTerrainRenderer {
             } else if (e.code == "ArrowRight") {
                 this.camera.position.set(this.camera.position.x - 5, this.camera.position.y, this.camera.position.z);
             } else if (e.code == "KeyW") {
-                this.terrain.geometry.rotateX(Math.PI / 8);
+                this.terrain.getMesh().geometry.rotateX(Math.PI / 8);
             } else if (e.code == "KeyS") {
-                this.terrain.geometry.rotateX(-Math.PI / 2);
+                this.terrain.getMesh().geometry.rotateX(-Math.PI / 2);
             } else if (e.code == "KeyA") {
-                this.terrain.geometry.rotateY(Math.PI / 8);
+                this.terrain.getMesh().geometry.rotateY(Math.PI / 8);
             } else if (e.code == "KeyD") {
-                this.terrain.geometry.rotateY(-Math.PI / 8);
+                this.terrain.getMesh().geometry.rotateY(-Math.PI / 8);
             } else if (e.code == "KeyQ") {
-                this.terrain.geometry.rotateZ(Math.PI / 8);
+                this.terrain.getMesh().geometry.rotateZ(Math.PI / 8);
             } else if (e.code == "KeyE") {
-                this.terrain.geometry.rotateZ(-Math.PI / 8);
+                this.terrain.getMesh().geometry.rotateZ(-Math.PI / 8);
             } else if (e.code == "KeyP") {
                 Simulation.pause();
             }
 
-            console.log(this.terrain.geometry);
+            console.log(this.terrain.getMesh().geometry);
 
             this.camera.updateProjectionMatrix();
         });

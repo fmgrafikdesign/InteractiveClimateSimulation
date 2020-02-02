@@ -16,6 +16,7 @@ export class Terrain implements ITerrain {
         this.nrOfVerticesY = nrOfVerticesY;
 
         this.geometry = geometry;
+        this.vertices = [];
 
         // dummy material -> gets overridden in TerrainViewMatthias.tsiew.ts
         const material: Material = new MeshPhongMaterial({color: new Color(1, 1, 1)});
@@ -27,8 +28,10 @@ export class Terrain implements ITerrain {
 
 	public setVertex(indexX: number, indexY: number, data: Vector3) {
         const index: number = this.getVertexPositionInArray(indexX, indexY);
-        this.vertices[index].position = data;
-        this.geometry.vertices[index] = this.vertices[index].position;
+        this.vertices[index].x = data.x;
+        this.vertices[index].y = data.y;
+        this.vertices[index].z = data.z;
+        this.geometry.vertices[index] = this.vertices[index];
 
         this.geometry.verticesNeedUpdate = true;
         this.geometry.elementsNeedUpdate = true;
@@ -40,10 +43,7 @@ export class Terrain implements ITerrain {
     }
 
 	public setZValue(indexX: number, indexY: number, z: number) {
-        this.setVertex(indexX, indexY, new Vector3(
-            (this._mesh.geometry as Geometry).vertices[this.getVertexPositionInArray(indexX, indexY)].x,
-            (this._mesh.geometry as Geometry).vertices[this.getVertexPositionInArray(indexX, indexY)].y,
-            z));
+        this.setVertex(indexX, indexY, new Vector3(this.vertices[this.getVertexPositionInArray(indexX, indexY)].x, this.vertices[this.getVertexPositionInArray(indexX, indexY)].y, z));
     }
 
 	public getVertex(indexX: number, indexY: number): ClimateVertex {
@@ -64,8 +64,8 @@ export class Terrain implements ITerrain {
 
 	private GetVerticesFromGeometry() {
 		this.vertices = [];
-		this.geometry.vertices.forEach(value => {
-			this.vertices.push(new ClimateVertex(value));
+		this.geometry.vertices.forEach((value, index) => {
+			this.vertices.push(new ClimateVertex(value.x, value.y, value.z, index % this.nrOfVerticesX, Math.floor(index / this.nrOfVerticesX)));
 		});
 	}
 
@@ -165,4 +165,12 @@ export class Terrain implements ITerrain {
 
 		this.GetVerticesFromGeometry();
 	}
+
+    getVertices(): ClimateVertex[] {
+        return this.vertices;
+    }
+
+    getMesh(): Mesh {
+        return this._mesh;
+    }
 }
