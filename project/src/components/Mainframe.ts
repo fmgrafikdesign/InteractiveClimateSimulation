@@ -12,6 +12,7 @@ import {ITerrainColorModel} from "./Terrain/ColorModels/ITerrainColorModel";
 import TemperatureHumidityColorModel from "./Terrain/ColorModels/TemperatureHumidityColorModel";
 import HeightColorModel from "./Terrain/ColorModels/HeightColorModel";
 import TemperatureColorModel from "./Terrain/ColorModels/TemperatureColorModel";
+import LegacyTemperatureColorModel from "./Terrain/ColorModels/LegacyTemperatureColorModel";
 
 const MAP = 0;
 const TERRAIN = 1;
@@ -124,7 +125,7 @@ export default function App(): m.Component {
                 colorModel = new HumidityColorModel();
                 break;
             case "temperature":
-                colorModel = new TemperatureColorModel();
+                colorModel = new LegacyTemperatureColorModel();
                 break;
             case "temperature-humidity":
             default:
@@ -185,7 +186,7 @@ export default function App(): m.Component {
                             ])),
                         m('#helperInfo.UI-Element-Container', m('', 'click anywhere on the map to load this area in 3D')),
                         m('#debug-info', m(DebugInfo)),
-                        m('#colorModelContainer.UI-Element-Container.active', [
+                        m('#colorModelContainer.UI-Element-Container.active.d-none', [
                             m('.colorModelButton.clickable', {onclick: () => changeColorModel("height")}, "Height"),
                             m('.colorModelButton.clickable', {onclick: () => changeColorModel("humidity")}, "Humidity"),
                             m('.colorModelButton.clickable', {onclick: () => changeColorModel("temperature")}, "Temperature"),
