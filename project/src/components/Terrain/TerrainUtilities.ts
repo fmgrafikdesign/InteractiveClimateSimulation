@@ -55,8 +55,8 @@ export default class TerrainUtilities {
 
         let lastVertex: ClimateVertex = newGeometry.vertices[newGeometry.vertices.length - 1] as ClimateVertex;
 
-        lastVertex.x = (compareVertex1.x + compareVertex2.x) / 2;
-        lastVertex.y = (compareVertex1.y + compareVertex2.y) / 2;
+        compareVertex1.x = lastVertex.x; compareVertex1.y = lastVertex.y;
+        compareVertex2.x = lastVertex.x; compareVertex2.y = lastVertex.y;
 
         return newGeometry;
     }
