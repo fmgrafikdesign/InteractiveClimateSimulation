@@ -55,8 +55,10 @@ export default class TerrainUtilities {
 
         let lastVertex: ClimateVertex = newGeometry.vertices[newGeometry.vertices.length - 1] as ClimateVertex;
 
-        compareVertex1.x = lastVertex.x; compareVertex1.y = lastVertex.y;
-        compareVertex2.x = lastVertex.x; compareVertex2.y = lastVertex.y;
+        compareVertex1.x = lastVertex.x;
+        compareVertex1.y = lastVertex.y;
+        compareVertex2.x = lastVertex.x;
+        compareVertex2.y = lastVertex.y;
 
         return newGeometry;
     }
@@ -156,13 +158,20 @@ export default class TerrainUtilities {
 
     public static getMaxHeight(terrain: ITerrain): number {
         let maxHeight = terrain.getVertices()[0].y;
-        terrain.getVertices().forEach((vertex) => { maxHeight = Math.max(maxHeight, vertex.y); });
+        terrain.getVertices().forEach((vertex) => {
+            maxHeight = Math.max(maxHeight, vertex.y);
+        });
         return Math.round(maxHeight);
     }
 
     public static getMinHeight(terrain: ITerrain): number {
-        let minHeight = terrain.getVertices()[0].y;
-        terrain.getVertices().forEach((vertex) => { minHeight = Math.min(minHeight, vertex.y); });
+        let minHeight = 99999;
+        terrain.getVertices().forEach((vertex) => {
+                if (vertex.y >= 1) {
+                    minHeight = Math.min(minHeight, vertex.y);
+                }
+            }
+        );
         return Math.round(minHeight);
     }
 }
