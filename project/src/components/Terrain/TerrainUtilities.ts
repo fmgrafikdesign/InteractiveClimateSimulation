@@ -50,6 +50,14 @@ export default class TerrainUtilities {
             newGeometry.vertices[index + Math.floor(index / sizeOldGeometry.x)] = vertex;
         });
 
+        const compareVertex1: ClimateVertex = newGeometry.vertices[newGeometry.vertices.length - 2] as ClimateVertex;
+        const compareVertex2: ClimateVertex = newGeometry.vertices[newGeometry.vertices.length - 1 - sizeOldGeometry.x] as ClimateVertex;
+
+        let lastVertex: ClimateVertex = newGeometry.vertices[newGeometry.vertices.length - 1] as ClimateVertex;
+
+        lastVertex.x = (compareVertex1.x + compareVertex2.x) / 2;
+        lastVertex.y = (compareVertex1.y + compareVertex2.y) / 2;
+
         return newGeometry;
     }
 
