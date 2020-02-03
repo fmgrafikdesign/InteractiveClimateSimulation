@@ -85,7 +85,8 @@ export default class Simulation {
 
     // Resets the simulation
     static reset() {
-
+        this.temperatureChangePerTick = 0;
+        this.humidityChangePerTick = 0;
     }
 
     static start() {

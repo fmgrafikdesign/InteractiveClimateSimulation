@@ -128,6 +128,7 @@ $defaultTransitionTime: 0.3s;
 	flex-direction: column;
 	overflow: hidden;
 	transition: $defaultTransitionTime ease;
+    color: #fff;
 
 	&.Map-Getter-Button-Label {
 		border-bottom: 1px #b4b4b4 solid;

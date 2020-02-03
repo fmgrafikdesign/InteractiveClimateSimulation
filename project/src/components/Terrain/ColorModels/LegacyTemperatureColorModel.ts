@@ -5,8 +5,8 @@ import ITerrain from "../ITerrain";
 
 export default class LegacyTemperatureColorModel implements ITerrainColorModel {
     updateMeshColors(terrain: ITerrain): void {
-        const maxTemp = 40;
-        const minTemp = -20;
+        const maxTemp = 50;
+        const minTemp = -25;
 
         const geometry = terrain.getGeometry();
         geometry.faces.forEach((face, index) => {
