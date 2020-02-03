@@ -20,7 +20,12 @@ export default class TemperatureColorModel implements ITerrainColorModel {
             let g = 1;
             let b2 = Helpers.quantize(Helpers.clamp(1 / (maxTemp - minTemp) * (maxTemp - temperature), 0, 1), 0, 1);
 
-            const color = {r, g, b: b2};
+            let color = {r, g, b: b2};
+
+            const threshold = 1;
+            if (Math.abs(a.y) < threshold || Math.abs(b.y) < threshold || Math.abs(c.y) < threshold) {
+                color = {r: 0, g: 0, b: 0};
+            }
 
             face.color.setRGB(color.r, color.g, color.b);
         });

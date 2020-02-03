@@ -143,7 +143,7 @@ export default function App(): m.Component {
                 center: [14.515, 48.368], // Specify the starting position [lng, lat]
                 container: 'map', // Specify the container ID
                 style: 'mapbox://styles/mapbox/outdoors-v11', // Specify which map style to use
-                zoom: 14.5 // Specify the starting zoom
+                zoom: 13 // Specify the starting zoom
             });
             map.on("click", clickOnMap);
             map.on("mousemove", hoverMap);

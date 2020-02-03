@@ -11,7 +11,7 @@ export default class MapboxMathUtils {
         return -10000 + ((r * 256 * 256 + g * 256 + b) * 0.1); // in Uint8ClampedArray the values are store in RGBA
     }
 
-    public static getTileIndices(longitude: number, latitude: number, zoomLevel: number = 14): Vector3 {
+    public static getTileIndices(longitude: number, latitude: number, zoomLevel: number = 13): Vector3 {
         const tileSize = this.getTileSize(zoomLevel);
         const worldSize = tileSize * Math.pow(2, zoomLevel);
         const x = (180 + longitude) / 360 * worldSize;
@@ -22,7 +22,7 @@ export default class MapboxMathUtils {
         return new Vector3(tileX, tileY, zoomLevel);
     }
 
-    public static getLongitudeLatitudeFromIndex(x: number, y: number, zoomLevel: number = 14): LngLat {
+    public static getLongitudeLatitudeFromIndex(x: number, y: number, zoomLevel: number = 13): LngLat {
         const tileSize = this.getTileSize(zoomLevel);
         const worldSize = tileSize * Math.pow(2, zoomLevel);
 

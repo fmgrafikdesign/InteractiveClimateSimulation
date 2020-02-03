@@ -32,8 +32,14 @@ export default class HeightColorModel implements ITerrainColorModel{
            // g = Helpers.quantize(g, 0, 100);
             //b2 = Helpers.quantize(b2, 0, 100);
 
-            return face.color.setRGB(r, g, b2);
+            let color = {r, g, b: b2};
 
+            const threshold = 1;
+            if (Math.abs(a.y) < threshold || Math.abs(b.y) < threshold || Math.abs(c.y) < threshold) {
+                color = {r: 0.8, g: 0.8, b: 0.8};
+            }
+
+            face.color.setRGB(color.r, color.g, color.b);
         });
 
         // console.log("variable: ", terrain.getMinHeight(), terrain.getMaxHeight());

@@ -60,6 +60,13 @@ export default class TerrainUtilities {
         compareVertex2.x = lastVertex.x;
         compareVertex2.y = lastVertex.y;
 
+        let compareVertex3: ClimateVertex = newGeometry.vertices[newGeometry.vertices.length - sizeOldGeometry.x + 1] as ClimateVertex;
+        let compareVertex4: ClimateVertex = newGeometry.vertices[newGeometry.vertices.length - sizeOldGeometry.x + 2] as ClimateVertex;
+
+        compareVertex4.x = compareVertex3.x;
+        compareVertex4.y = compareVertex3.y;
+        compareVertex4.z = compareVertex3.z;
+
         return newGeometry;
     }
 

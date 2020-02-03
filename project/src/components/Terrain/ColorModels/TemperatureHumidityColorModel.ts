@@ -20,7 +20,13 @@ export default class TemperatureHumidityColorModel implements ITerrainColorModel
             let g = .9;
             let b2 = .9 / (maxTemp - minTemp) * (maxTemp - temperature);
 
-            const color = {r, g, b: b2};
+            let color = {r, g, b: b2};
+
+
+            const threshold = 1;
+            if (Math.abs(a.y) < threshold || Math.abs(b.y) < threshold || Math.abs(c.y) < threshold) {
+                color = {r: 0, g: 1, b: 0};
+            }
 
             face.color.setRGB(color.r, color.g, color.b);
         });

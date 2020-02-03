@@ -35,7 +35,12 @@ export default class HumidityColorModel implements ITerrainColorModel {
             //g = Helpers.quantize(g, 0, 1);
             //b2 = Helpers.quantize(b2, 0, 1);
 
-            const color = {r, g, b: b2};
+            let color = {r, g, b: b2};
+
+            const threshold = 1;
+            if (Math.abs(a.y) < threshold || Math.abs(b.y) < threshold || Math.abs(c.y) < threshold) {
+                color = {r: 0, g: 0, b: 1};
+            }
 
             face.color.setRGB(color.r, color.g, color.b);
         });

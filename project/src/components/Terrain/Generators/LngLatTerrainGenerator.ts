@@ -23,7 +23,7 @@ export default class LngLatTerrainGenerator implements ITerrainGenerator {
     private zoomLevel: number = 13;
 
     // TODO incorporate zoom level
-    generate(lat?: number, lng?: number, width: number = 512, height: number = 512, verticesX: number = 128, verticesY: number = 128): ITerrain {
+    generate(lat?: number, lng?: number, width: number = 512, height: number = 512, verticesX: number = 64, verticesY: number = 64): ITerrain {
         if (lat) {
             this.centerLatitude = lat;
         }
