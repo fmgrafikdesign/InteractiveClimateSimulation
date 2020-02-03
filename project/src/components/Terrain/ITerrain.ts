@@ -16,4 +16,7 @@ export default interface ITerrain {
     getGeometry(): PlaneGeometry;
 
     getMesh(): Mesh;
+
+    getMinHeight(): number,
+    getMaxHeight(): number
 }

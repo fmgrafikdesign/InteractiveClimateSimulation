@@ -167,7 +167,7 @@ export default class TerrainUtilities {
     public static getMinHeight(terrain: ITerrain): number {
         let minHeight = 99999;
         terrain.getVertices().forEach((vertex) => {
-                if (vertex.y >= 1) {
+                if (vertex.y >= .1) {
                     minHeight = Math.min(minHeight, vertex.y);
                 }
             }

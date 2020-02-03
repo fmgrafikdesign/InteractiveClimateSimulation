@@ -2,9 +2,10 @@ import {Vector3} from "three";
 import ITerrain from "../Terrain/ITerrain";
 import SimulationContext from "./SimulationContext";
 import SimpleMatthiasscheEnergyWaterSimulation from "./SimpleMatthiasscheEnergyWaterSimulation";
+import TrivialTemperatureHumiditySimulation from "./TrivialTemperatureHumiditySimulation";
 
 // The strategy pattern is used to allow quick switching between strategies.
-const strategy = new SimpleMatthiasscheEnergyWaterSimulation();
+const strategy = new TrivialTemperatureHumiditySimulation();
 //const strategy = new SimpleEnergySimulation();
 //const strategy = new SimpleWaterSimulation();
 //const strategy = new TrivialTemperatureHumiditySimulation();
@@ -35,7 +36,7 @@ export default class Simulation {
     static context = new SimulationContext();
 
     static paused: boolean = false;
-    static milliSecondsPerTick: number = 1;
+    static milliSecondsPerTick: number = 200;
     static currentTick: number = 0;
     static currentTickFinished: boolean = true;
     static lastTickTime: number = 0;
@@ -47,8 +48,8 @@ export default class Simulation {
      * The unhindered average energy input from the sun (without clouds, light shattering etc.)
      */
     static sunEnergyInput: number;
-    static temperatureChangePerTick: number = .2;
-    static humidityChangePerTick: number = .01;
+    static temperatureChangePerTick: number = 0;
+    static humidityChangePerTick: number = 0;
 
     /**
      * The average air movement coming from outside the world boundaries

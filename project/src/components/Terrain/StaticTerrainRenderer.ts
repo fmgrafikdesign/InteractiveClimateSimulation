@@ -214,7 +214,7 @@ export default class StaticTerrainRenderer {
 
         let intersects: Intersection[] = rayCaster.intersectObject(this.terrain.getMesh());
 
-        console.log(intersects.length);
+        // console.log(intersects.length);
         intersects.forEach((intersection) => {
             const hitVertex: ClimateVertex = intersection.point as ClimateVertex;
             const hitFace: Face3 = intersection.face as Face3;

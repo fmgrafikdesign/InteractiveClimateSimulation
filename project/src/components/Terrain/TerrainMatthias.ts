@@ -6,11 +6,15 @@ import Simulation from "../Simulation/Simulation";
 import TerrainUtilities from "./TerrainUtilities";
 
 export default class Terrain implements ITerrain {
+
     private readonly nrOfVerticesX: number;
     private readonly nrOfVerticesY: number;
 
     private geometry: PlaneGeometry;
     private _mesh: Mesh;
+
+    private minHeight: number = 0;
+    private maxHeight: number = 0;
 
     private hasBorderVertices: boolean;
 
@@ -114,6 +118,10 @@ export default class Terrain implements ITerrain {
 
         this._mesh = new Mesh(this.geometry, material);
 
+        // Calculate new min and max height
+        this.minHeight = TerrainUtilities.getMinHeight(this);
+        this.maxHeight = TerrainUtilities.getMaxHeight(this);
+
         // Restart the simulation after updating the mesh
         Simulation.reset();
         Simulation.context.setupStrategy();
@@ -129,6 +137,13 @@ export default class Terrain implements ITerrain {
 
     getMesh(): Mesh {
         return this._mesh;
+    }
+
+    getMinHeight(): number {
+        return this.minHeight;
+    }
+    getMaxHeight(): number {
+        return this.maxHeight;
     }
 
     /*

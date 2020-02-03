@@ -6,6 +6,12 @@ import ClimateVertex from "./Baseclasses/ClimateVertex";
 import ITerrain from "./ITerrain";
 
 export default class Terrain implements ITerrain {
+    getMinHeight(): number {
+        throw new Error("Method not implemented.");
+    }
+    getMaxHeight(): number {
+        throw new Error("Method not implemented.");
+    }
     mesh: Mesh;
     geometry: Geometry;
     vertices: ClimateVertex[];
