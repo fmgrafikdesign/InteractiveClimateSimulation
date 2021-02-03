@@ -6,7 +6,6 @@
     "compile": "browserify --debug src/main.ts -p [ tsify --project src/tsconfig.json ] -o public/js/app.js",
     "build": "webpack --mode=production",
     "webpack": "webpack",
-    "clean": "rm -f public/js/app.js",
     "start": "budo src/main.ts:js/app.js -p 3000 --dir public --live=*.{html,js,css} -- --debug -p [ tsify --project src/tsconfig.json ]",
     "start-ssl": "budo src/main.ts:js/app.js -p 3000 --dir public --ssl --live=*.{html,js,css} -- --debug -p [ tsify --project src/tsconfig.json ]"
   },
