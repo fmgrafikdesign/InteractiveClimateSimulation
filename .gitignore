@@ -5,8 +5,7 @@
 /node_modules/
 /Experiments/low_poly_look/node_modules/
 /.idea/
+.idea
 # /project/public/css/
 # /project/public/js/app.js
-/project/public/css/style.css
-/project/public/css/style.css.map
 /InteractiveClimateSimulation.zip
