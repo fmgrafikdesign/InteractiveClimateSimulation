@@ -16,7 +16,7 @@
     "mithril": "^2.0.4",
     "sass": "^1.24.4",
     "simplex-noise": "^2.4.0",
-    "three": "^0.109.0",
+    "three": "^0.137.0",
     "three-orbitcontrols-ts": "^0.1.2",
     "ts-debounce": "^1.0.0",
     "webmidi": "^2.5.1"
